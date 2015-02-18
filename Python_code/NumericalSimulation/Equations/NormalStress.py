@@ -1,2 +1,2 @@
-def NormalStress(momentX,momentY,Ixx,Iyy,c,x,y):
+def NormalStress(moment,I,c,x,y):
     return 0
