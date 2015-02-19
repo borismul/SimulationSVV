@@ -13,5 +13,6 @@ def ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
         #Just the lift
         S_y = lift
         S_x = 0
+    else: raise IOError('z outside wing')
     return S_y, S_x
 #it returns a reference error if z is outside the range of the wingspan.
