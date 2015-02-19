@@ -56,7 +56,7 @@ for z in np.arange(0,l1+l2,dz):
     centroid = Centroid(tFront,tRear,tTop,tBottom,chord)
     I = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
-    lift = Lift(z,liftDist,l2,l1)
+    lift = Lift(z,liftDist,l1,l2,cr,ct,chord,dz)
     engineWeight = EngineWeight(me,g)
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
     ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY)
