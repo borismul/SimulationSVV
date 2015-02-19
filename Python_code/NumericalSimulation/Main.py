@@ -33,7 +33,9 @@ tTop = 0.002 #(-)
 tBottom = 0.002 #(-)
 g = 9.81 #(m/s^2)
 liftDist = 193*10**3*g/2 #(N)
-T = 64*10**3*g #(N)
+T = 64*10**3 #(N)
+fuelliters = 7500 # (liters)
+fueldensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 100
@@ -56,7 +58,7 @@ for z in np.arange(0,l1+l2,dz):
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l2,l1)
     engineWeight = EngineWeight(me,g)
-    shearForce = ShearForce(lift,engineWeight)
+    shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
     shearFlow = ShearFlow(T,chord,shearForce,shearCenter)
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(shearForce,moment,dz)
