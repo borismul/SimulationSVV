@@ -6,7 +6,6 @@ def Lift(z,liftDist,l1,l2,cr,ct,c,Lift,dz):
     return Lift
 
 #unit test
-
 #import numpy as np
 #from ChordLength import ChordLength
 #import matplotlib.pyplot as plt
