@@ -1,2 +1,3 @@
-def I(tFront,tRear,tTop,tBottom, centroid):
-    return 0
+def MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid):
+    
+    dimensions = zeros(4,2)

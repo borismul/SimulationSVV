@@ -5,18 +5,18 @@ import scipy as sp
 import sys
 
 #Importing own definitions
-from Centroid import *
-from ChordLength import *
-import EngineWeight
-import Lift
-import Moment
-import MomentOfInertia
-import NormalStress
-import ShearCenter
-import ShearFlow
-import ShearForce
-import ShearStress
-import Torque
+from Centroid import Centroid
+from ChordLength import ChordLength
+from EngineWeight import EngineWeight
+from Lift import Lift
+from Moment import Moment
+from MomentOfInertia import MomentOfInertia
+from NormalStress import NormalStress
+from ShearCenter import ShearCenter
+from ShearFlow import ShearFlow
+from ShearForce import ShearForce
+from ShearStress import ShearStress
+from Torque import Torque
 
 #Defining given input variables
 cr = 6.27 #(m)
@@ -40,14 +40,14 @@ stepsXY = 100
 stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = 0
+moment = 0
 
 #Creating 4D arrays with zeros
-shearStressArray = np.zeros((stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY,stepsXY))
-normalStressArray = np.zeros((stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY))
-
+shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
+normalStressArray = np.zeros((stepsZ,4,stepsXY))
 
 #Looping through all cross-sections with stepsize dz
-for z in np.arange(0,l1+l2+dz,dz):
+for z in np.arange(0,l1+l2,dz):
     
     #Determining variables needed for shear stress and normal stress
     chord = ChordLength(cr,ct,l1,l2,z)
@@ -59,16 +59,15 @@ for z in np.arange(0,l1+l2+dz,dz):
     shearForce = ShearForce(lift,engineWeight)
     shearFlow = ShearFlow(T,chord,shearForce,shearCenter)
     torque = Torque(T,h3,chord,shearForce)
-    moment = Moment(torque,l3,shearForce)
+    moment = Moment(shearForce,moment,dz)
     
     #Calculating output (shearstress and normalstress)
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
-    normalStress = NormalStress(moment,I,chord,dz)
+    normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
     
     #Storing in 4D array
-    shearStressArray[i,:,:,:,:,:,:] = shearStress
-    print(shearStressArray[i,0,0,0,0,0,0])
-    normalStress[i,:,:,:,:,:] = normalStress
+    shearStressArray[i,:,:,:] = shearStress
+    normalStress[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i += 1
