@@ -5,18 +5,18 @@ import scipy as sp
 import sys
 
 #Importing own definitions
-import Centroid.Centroid as Centroid
-import ChordLength.ChordLength as ChordLength
-import EngineWeight.EngineWeight as EngineWeight
-import Lift.Lift as Lift
-import Moment.Moment as Moment
-import MomentOfInertia.I as defI
-import NormalStress.NormalStress as NormalStress
-import ShearCenter.ShearCenter as ShearCenter
-import ShearFlow.ShearFlow as ShearFlow
-import ShearForce.ShearForce as ShearForce
-import ShearStress.ShearStress as ShearStress
-import Torque.Torque as Torque
+from Centroid import *
+from ChordLength import *
+import EngineWeight
+import Lift
+import Moment
+import MomentOfInertia
+import NormalStress
+import ShearCenter
+import ShearFlow
+import ShearForce
+import ShearStress
+import Torque
 
 #Defining given input variables
 cr = 6.27 #(m)
@@ -42,8 +42,9 @@ dz = (l1+l2)/stepsZ
 i = 0
 
 #Creating 4D arrays with zeros
-shearStressArray = np.zeros(stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY,stepsXY)
-normalStressArray = np.zeros(stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY)
+shearStressArray = np.zeros((stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY,stepsXY))
+normalStressArray = np.zeros((stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY))
+
 
 #Looping through all cross-sections with stepsize dz
 for z in np.arange(0,l1+l2+dz,dz):
@@ -51,9 +52,9 @@ for z in np.arange(0,l1+l2+dz,dz):
     #Determining variables needed for shear stress and normal stress
     chord = ChordLength(cr,ct,l1,l2,z)
     centroid = Centroid(tFront,tRear,tTop,tBottom,chord)
-    I = defI(tFront,tRear,tTop,tBottom,chord,centroid)
+    I = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
-    lift = Lift(chord,liftDist)
+    lift = Lift(z,liftDist,l2,l1)
     engineWeight = EngineWeight(me,g)
     shearForce = ShearForce(lift,engineWeight)
     shearFlow = ShearFlow(T,chord,shearForce,shearCenter)
