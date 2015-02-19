@@ -7,3 +7,4 @@ def NormalStress(moment,I,c,stepSizeXY):
         sigma = np.multiply((moment[1]*I[0]- moment[0]*I[1])/(I[2]*I[0]-I[1]*I[1]),coordinates(i)) + np.multiply((moment[0]*I[2] - moment[1]*I[2])/(I[2]*I[0]-I[1]*I[1]),coordinates[i+1])
     
     return sigma
+    
