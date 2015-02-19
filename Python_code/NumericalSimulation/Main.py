@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
+import sys
 
 #Importing own definitions
 from Centroid import *
@@ -32,21 +33,23 @@ tTop = 0.002 #(-)
 tBottom = 0.002 #(-)
 g = 9.81 #(m/s^2)
 liftDist = 193*10**3*g/2 #(N)
-T = 64*10**3*g #(N)
+T = 64*10**3 #(N)
+fuelliters = 7500 # (liters)
+fueldensity = 0.81 # (kg/liter)
 
 #Defining own input variables
+stepsXY = 100
 stepsZ = 100
 dz = (l1+l2)/stepsZ
-stepsXY = 100
 i = 0
 
 #Creating 4D arrays with zeros
-shearStressArray = np.zeros((4,stepsXY,stepsXY,stepsZ))
-normalStressArray = np.zeros((4,stepsXY,stepsXY,stepsZ))
+shearStressArray = np.zeros((stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY,stepsXY))
+normalStressArray = np.zeros((stepsZ,stepsZ,stepsXY,stepsXY,4,stepsXY))
+
 
 #Looping through all cross-sections with stepsize dz
 for z in np.arange(0,l1+l2+dz,dz):
-
     
     #Determining variables needed for shear stress and normal stress
     chord = ChordLength(cr,ct,l1,l2,z)
@@ -55,7 +58,7 @@ for z in np.arange(0,l1+l2+dz,dz):
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l2,l1)
     engineWeight = EngineWeight(me,g)
-    shearForce = ShearForce(lift,engineWeight)
+    shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
     shearFlow = ShearFlow(T,chord,shearForce,shearCenter)
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(torque,l3,shearForce)
@@ -65,8 +68,9 @@ for z in np.arange(0,l1+l2+dz,dz):
     normalStress = NormalStress(moment,I,chord,dz)
     
     #Storing in 4D array
-    shearStressArray[:,:,:,i] = shearStress
-    normalStress[:,:,:,i] = normalStress
+    shearStressArray[i,:,:,:,:,:,:] = shearStress
+    print(shearStressArray[i,0,0,0,0,0,0])
+    normalStress[i,:,:,:,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i += 1
