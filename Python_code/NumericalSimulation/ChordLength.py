@@ -12,3 +12,6 @@ def ChordLength(Croot,Ctip,l1,l2,z):
     else:
         print ("z is outside the range")
         return 0
+
+#unit test
+#print ChordLength(2,1,1,1,1.5)
