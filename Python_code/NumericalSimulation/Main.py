@@ -58,7 +58,7 @@ for z in np.arange(0,l1+l2+dz,dz):
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l2,l1)
     engineWeight = EngineWeight(me,g)
-    ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
+    shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
     shearFlow = ShearFlow(T,chord,shearForce,shearCenter)
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(torque,l3,shearForce)
