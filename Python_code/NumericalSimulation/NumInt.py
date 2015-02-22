@@ -5,7 +5,7 @@ def NumInt(x,y,a,b):
     if b>x[-1] or a<x[0]: raise IOError('boundaries (a and/or b) out of range')
 #find in between which x-coordinates described in array x a and b lie  
     i=0
-    while x[i]<=a: i+=1
+    while x[i]<a: i+=1
     j=len(x)-1
     while x[j]>=b: j-=1
 #find the part of the slice in x from the left boundary to a and b
