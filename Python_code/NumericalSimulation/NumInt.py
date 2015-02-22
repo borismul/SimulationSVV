@@ -7,7 +7,9 @@ def NumInt(x,y,a,b):
     i=0
     while x[i]<a: i+=1
     j=len(x)-1
-    while x[j]>=b: j-=1
+    while x[j]>=b: 
+        j-=1
+        print j
 #find the part of the slice in x from the left boundary to a and b
     part_begin = (a-x[i-1])/(x[i]-x[i-1])
     part_end = (b-x[j])/(x[j+1]-x[j])
