@@ -1,4 +1,8 @@
-def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront, tTop, tRear, tBottom):
+def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront, tTop, tRear, tBottom,plot):
+    from XYCoordinates import XYCoordinates 
+    from NumInt import NumInt
+    import numpy as np
+    import matplotlib.pyplot as plt
     Ixx = I[0]
     Ixy = I[1]
     Iyy = I[2]
@@ -49,15 +53,16 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
     qarray[2,:] = qRear
     qarray[3,:] = qBottom
     #print qFront[0] - qBottom[-1]
-    plt.subplot(221)
-    plt.plot(coordinates[1,:],qFront)
-    plt.subplot(222)
-    plt.plot(coordinates[1,:],qTop)
-    plt.subplot(223)
-    plt.plot(coordinates[1,:],qRear)
-    plt.subplot(224)
-    plt.plot(coordinates[1,:],qBottom)
-
+    if plot == True:
+        plt.subplot(221)
+        plt.plot(coordinates[1,:],qFront)
+        plt.subplot(222)
+        plt.plot(coordinates[1,:],qTop)
+        plt.subplot(223)
+        plt.plot(coordinates[1,:],qRear)
+        plt.subplot(224)
+        plt.plot(coordinates[1,:],qBottom)
+        plot = False
     
     return qarray
 #    for y in coordinates[:,1]:
@@ -74,24 +79,24 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
 #        List.append(qb)
 
 #unit test
-from XYCoordinates import XYCoordinates
-import numpy as np
-from NumInt import NumInt
-from ChordLength import ChordLength
-import matplotlib.pyplot as plt
-cr = 2
-ct = 1
-l1 = 5
-l2 = 10
-d = 1
-shearForce = [15.,1.5]
-I = [1.,0.,1.]
-stepsXY = 100
-centroid = [0.,0.]
-tFront = 0.001
-tRear = 0.001
-tTop = 0.001
-tBottom = 0.001
-for z in np.arange(0,l1+l2+d,d):
-    chord = ChordLength(cr,ct,l1,l2,z)
-    shearflow = ShearFlow(chord, shearForce,0,I,stepsXY,centroid,tFront,tTop, tRear, tBottom)
+#from XYCoordinates import XYCoordinates
+#import numpy as np
+#from NumInt import NumInt
+#from ChordLength import ChordLength
+#import matplotlib.pyplot as plt
+#cr = 2
+#ct = 1
+#l1 = 5
+#l2 = 10
+#d = 1
+#shearForce = [15.,1.5]
+#I = [1.,0.,1.]
+#stepsXY = 100
+#centroid = [0.,0.]
+#tFront = 0.001
+#tRear = 0.001
+#tTop = 0.001
+#tBottom = 0.001
+#for z in np.arange(0,l1+l2+d,d):
+#    chord = ChordLength(cr,ct,l1,l2,z)
+#    shearflow = ShearFlow(chord, shearForce,0,I,stepsXY,centroid,tFront,tTop, tRear, tBottom,True)

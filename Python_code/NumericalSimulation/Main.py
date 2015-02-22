@@ -18,6 +18,7 @@ from ShearForce import ShearForce
 from ShearStress import ShearStress
 from Torque import Torque
 
+
 #Defining given input variables
 cr = 6.27 #(m)
 ct = 1.69 #(m)
@@ -39,11 +40,11 @@ fueldensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 100
-stepsZ = 100
+stepsZ = 5
 dz = (l1+l2)/stepsZ
 i = 0
 moment = 0
-
+lift = 0
 #Creating 4D arrays with zeros
 shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
 normalStressArray = np.zeros((stepsZ,4,stepsXY))
@@ -56,20 +57,21 @@ for z in np.arange(0,l1+l2,dz):
     centroid = Centroid(tFront,tRear,tTop,tBottom,chord)
     I = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
-    lift = Lift(z,liftDist,l1,l2,cr,ct,chord,dz)
+    lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     engineWeight = EngineWeight(me,g)
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
-    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY)
+    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,True)
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(shearForce,moment,dz)
     
     #Calculating output (shearstress and normalstress)
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
-    normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
+    #print shearStress
+    #normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
     
     #Storing in 4D array
     shearStressArray[i,:,:,:] = shearStress
-    normalStress[i,:,:] = normalStress
+    #normalStress[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i += 1
