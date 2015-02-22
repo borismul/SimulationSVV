@@ -1,4 +1,4 @@
-def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront, tTop, tRear):
+def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront, tTop, tRear, tBottom):
     Ixx = I[0]
     Iyy = I[1]
     Ixy = I[2]
@@ -11,14 +11,17 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
     qb = 0.
     List = []
     for y in coordinates[:,1]:
-        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tFront*y*dy -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tFront*x*dy
-        List.append([qb,x,y])
+        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tFront*y*dy -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tFront*coordinates[0,0]*dx
+        List.append(qb)
+    for y in coordinates[:,3]:
+        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tRear*y*dy -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tRear*coordinates[0,2]*dx
+        List.append(qb)
     for x in coordinates[:,4]:
-        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*y*dx -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*x*dx
-        List.append([qb,x,y])
-    for y in coordinates[:,7]:
-        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tRear*y*dy -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tRear*x*dy
-        List.append([qb,x,y])
+        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*coordinates[0,4]*dx -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*x*dx
+        List.append(qb)
+    for x in coordinates[:,4]:
+        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tBottom*coordinates[0,6]*dx -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*x*dx
+        List.append(qb)
 
 #unit test
 from XYCoordinates import XYCoordinates
