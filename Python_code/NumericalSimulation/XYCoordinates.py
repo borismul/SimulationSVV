@@ -1,6 +1,6 @@
-
+import numpy as np
+import matplotlib.pyplot as plt
 def XYCoordinates(chord,stepsXY,centroid):
-    import numpy as np
     xRange = np.linspace(-0.25*chord,0.25*chord,num=stepsXY, endpoint=True)-centroid[0]
     yRange = np.linspace(-0.05*chord,0.05*chord,num=stepsXY, endpoint=True)-centroid[1]
     returnArray = np.zeros((8,stepsXY))
@@ -8,12 +8,15 @@ def XYCoordinates(chord,stepsXY,centroid):
     returnArray[1,:] = yRange
     returnArray[2,:] = -np.multiply(np.ones(stepsXY),(chord*0.25))-centroid[0]
     returnArray[3,:] = yRange
-    returnArray[4,:] = np.multiply(np.ones(stepsXY),(chord*0.05))-centroid[1]
-    returnArray[5,:] = xRange
-    returnArray[6,:] = -np.multiply(np.ones(stepsXY),(chord*0.05))-centroid[1]
-    returnArray[7,:] = xRange
-
+    returnArray[4,:] = xRange
+    returnArray[5,:] = np.multiply(np.ones(stepsXY),(chord*0.05))-centroid[1]
+    returnArray[6,:] = xRange    
+    returnArray[7,:] = -np.multiply(np.ones(stepsXY),(chord*0.05))-centroid[1]
     return returnArray
 
 #Unit Test
-XYCoordinates(1.98,100.,[0.,0.])
+#xy = XYCoordinates(1.98,100.,[0.,0.])
+#
+#for i in range(4):
+#    print i
+#    plt.plot(xy[2*i,:],xy[2*i+1,:])
