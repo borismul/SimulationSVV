@@ -1,3 +1,4 @@
+
 #Importing Python definitions
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,6 +18,9 @@ from ShearFlow import ShearFlow
 from ShearForce import ShearForce
 from ShearStress import ShearStress
 from Torque import Torque
+from XYCoordinates import XYCoordinates
+
+plt.close("all")
 
 
 #Defining given input variables
@@ -45,10 +49,10 @@ dz = (l1+l2)/stepsZ
 i = 0
 moment = 0
 lift = 0
-#Creating 4D arrays with zeros
+
+#Creating arrays with zeros
 shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
 normalStressArray = np.zeros((stepsZ,4,stepsXY))
-
 #Looping through all cross-sections with stepsize dz
 for z in np.arange(0,l1+l2,dz):
     
@@ -58,20 +62,40 @@ for z in np.arange(0,l1+l2,dz):
     I = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
-    engineWeight = EngineWeight(me,g)
+    engineWeight = EngineWeight(me,g,z,l3)
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
-    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,True)
+#    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,True)
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(shearForce,moment,dz)
     
     #Calculating output (shearstress and normalstress)
-    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
-    #print shearStress
-    #normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
-    
+#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+    normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
+
     #Storing in 4D array
-    shearStressArray[i,:,:,:] = shearStress
-    #normalStress[i,:,:] = normalStress
+#    shearStressArray[i,:,:,:] = shearStress
+    normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i += 1
+    
+maximum = np.amax(normalStressArray, axis = 0)
+
+for i in range(4):
+    plt.plot(range(100),maximum[i,:])
+
+plt.figure()
+for i in range(2):
+    chord = ChordLength(cr,ct,l1,l2,0)
+    coordinates = XYCoordinates(chord,stepsXY,centroid)
+    plt.plot(coordinates[i*2+1,:],normalStressArray[0,i,:])
+
+plt.xlabel("y (m) -->")
+plt.ylabel("sigma (Pa) -->")
+plt.figure()
+for i in range(2,4):
+    chord = ChordLength(cr,ct,l1,l2,0)
+    coordinates = XYCoordinates(chord,stepsXY,centroid)
+    plt.plot(coordinates[i*2,:],normalStressArray[0,i,:])
+plt.xlabel("x (m) -->")
+plt.ylabel("sigma (Pa) -->")
