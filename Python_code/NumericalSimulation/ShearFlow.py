@@ -55,6 +55,7 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
     #print qFront[0] - qBottom[-1]
     label = str(chordLength)
     if plot == True:
+        plt.figure()
         plt.subplot(221)
         plt.plot(coordinates[1,:],qFront, label = label)
         plt.subplot(222)
@@ -62,7 +63,7 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
         plt.subplot(223)
         plt.plot(coordinates[1,:],qRear, label = label)
         plt.subplot(224)
-        plt.plot(coordinates[4,:],qBottom, label = label)
+        plt.plot(coordinates[4,:],qBottom, label = label) ##Last picture does weird!?!
         plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
         plot = False
     
