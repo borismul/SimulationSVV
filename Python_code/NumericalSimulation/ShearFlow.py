@@ -1,5 +1,5 @@
 #Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
-def ShearFlow(chordLength, shearForce, shearCenter, I, coordinates, tFront, tTop, tRear, tBottom,plot):
+def ShearFlow(chordLength, shearForce, Moment, shearCenter, I, coordinates, tFront, tTop, tRear, tBottom,plot):
 #Import functions needed
     from NumInt import NumInt
     import numpy as np
@@ -11,12 +11,14 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, coordinates, tFront, tTop
 #Extract Shear Forces
     Sy = shearForce[0]
     Sx = shearForce[1]
-
+#Define the constant for qb calculation
     constx = -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy**2)
     consty = -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy**2)
+#create starting value
+    qb = 0  
+#Calculate the shear stresses qb
     #Front
     qbFront = [0]
-    qb = 0
     for i in range(1,len(coordinates[1,:])):
         qb += consty * NumInt(coordinates[1,:],tFront*coordinates[1,:],coordinates[1,i-1],coordinates[1,i]) + constx * NumInt(coordinates[1,:],tFront*coordinates[0,:],coordinates[1,i-1],coordinates[1,i])
         qbFront.append(qb)
@@ -35,11 +37,13 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, coordinates, tFront, tTop
     for i in range(1,len(coordinates[6,:])):
         qb += consty * NumInt(coordinates[6,:],tBottom*coordinates[7,:],coordinates[6,i-1],coordinates[6,i]) + constx * NumInt(coordinates[6,:],tBottom*coordinates[6,:],coordinates[6,i-1],coordinates[6,i])
         qbBottom.append(qb)
+#Put all the values of qb in an array
     qbarray = np.zeros((4,len(qbFront)))
     qbarray[0,:] = qbFront
     qbarray[1,:] = qbTop
     qbarray[2,:] = qbRear
     qbarray[3,:] = qbBottom
+#calculate qs0
     qs0 = 0
     for i in range(4):
         if i%2==0:
@@ -55,7 +59,6 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, coordinates, tFront, tTop
     qarray[1,:] = qTop
     qarray[2,:] = qRear
     qarray[3,:] = qBottom
-    #print qFront[0] - qBottom[-1]
     label = str(chordLength)
     if plot == True:
         plt.figure()
