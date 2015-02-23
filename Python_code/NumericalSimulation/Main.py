@@ -3,7 +3,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
-import sys
 
 #Importing own definitions
 from Centroid import Centroid
@@ -63,12 +62,11 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     engineWeight = EngineWeight(me,g,z,l3)
-    
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
-#    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,False)
-    
-    torque = Torque(T,h3,chord,shearForce)
     moment = Moment(shearForce,moment,dz)
+    coordinates = XYCoordinates(chord,stepsXY,centroid)    
+    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, coordinates,tFront,tTop,tRear,tBottom,True)
+    torque = Torque(T,h3,chord,shearForce)
     #Calculating output (shearstress and normalstress)
 #    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)

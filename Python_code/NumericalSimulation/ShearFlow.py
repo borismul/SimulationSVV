@@ -1,36 +1,39 @@
-def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront, tTop, tRear, tBottom,plot):
-    from XYCoordinates import XYCoordinates 
+#Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
+def ShearFlow(chordLength, shearForce, shearCenter, I, coordinates, tFront, tTop, tRear, tBottom,plot):
+#Import functions needed
     from NumInt import NumInt
     import numpy as np
     import matplotlib.pyplot as plt
+#Extract Moments of Inertia
     Ixx = I[0]
     Ixy = I[1]
     Iyy = I[2]
+#Extract Shear Forces
     Sy = shearForce[0]
     Sx = shearForce[1]
-    #section is cut at x = 0.25c, y = 0c
-    coordinates = XYCoordinates(chordLength,stepsXY,centroid)
+
     constx = -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy**2)
     consty = -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy**2)
     #Front
     qbFront = [0]
+    qb = 0
     for i in range(1,len(coordinates[1,:])):
-        qb = consty * NumInt(coordinates[1,:],tFront*coordinates[1,:],coordinates[1,0],coordinates[1,i]) + constx * NumInt(coordinates[1,:],tFront*coordinates[0,:],coordinates[1,0],coordinates[1,i])
+        qb += consty * NumInt(coordinates[1,:],tFront*coordinates[1,:],coordinates[1,i-1],coordinates[1,i]) + constx * NumInt(coordinates[1,:],tFront*coordinates[0,:],coordinates[1,i-1],coordinates[1,i])
         qbFront.append(qb)
     #Top
     qbTop = [qbFront[-1]]
     for i in range(1,len(coordinates[4,:])):
-        qb = qbFront[-1] + consty * NumInt(coordinates[4,:],tTop*coordinates[5,:],coordinates[4,0],coordinates[4,i]) + constx * NumInt(coordinates[4,:],tTop*coordinates[4,:],coordinates[4,0],coordinates[4,i])
+        qb += consty * NumInt(coordinates[4,:],tTop*coordinates[5,:],coordinates[4,i-1],coordinates[4,i]) + constx * NumInt(coordinates[4,:],tTop*coordinates[4,:],coordinates[4,i-1],coordinates[4,i])
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
     for i in range(1,len(coordinates[3,:])):
-        qb = qbTop[-1] + consty * NumInt(coordinates[3,:],tRear*coordinates[3,:],coordinates[3,0],coordinates[3,i]) + constx * NumInt(coordinates[3,:],tRear*coordinates[2,:],coordinates[3,0],coordinates[3,i])
+        qb += consty * NumInt(coordinates[3,:],tRear*coordinates[3,:],coordinates[3,i-1],coordinates[3,i]) + constx * NumInt(coordinates[3,:],tRear*coordinates[2,:],coordinates[3,i-1],coordinates[3,i])
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
     for i in range(1,len(coordinates[6,:])):
-        qb = qbRear[-1] + consty * NumInt(coordinates[6,:],tBottom*coordinates[7,:],coordinates[6,0],coordinates[6,i]) + constx * NumInt(coordinates[6,:],tBottom*coordinates[6,:],coordinates[6,0],coordinates[6,i])
+        qb += consty * NumInt(coordinates[6,:],tBottom*coordinates[7,:],coordinates[6,i-1],coordinates[6,i]) + constx * NumInt(coordinates[6,:],tBottom*coordinates[6,:],coordinates[6,i-1],coordinates[6,i])
         qbBottom.append(qb)
     qbarray = np.zeros((4,len(qbFront)))
     qbarray[0,:] = qbFront
