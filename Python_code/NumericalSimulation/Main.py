@@ -22,7 +22,6 @@ from XYCoordinates import XYCoordinates
 
 plt.close("all")
 
-
 #Defining given input variables
 cr = 6.27 #(m)
 ct = 1.69 #(m)
@@ -43,10 +42,10 @@ fuelliters = 7500 # (liters)
 fueldensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 100
-stepsZ = 100
+stepsXY = 1000
+stepsZ = 50
 dz = (l1+l2)/stepsZ
-i = 0
+i = stepsZ - 1
 moment = 0
 lift = 0
 
@@ -55,7 +54,7 @@ shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
 normalStressArray = np.zeros((stepsZ,4,stepsXY))
 
 #Looping through all cross-sections with stepsize dz
-for z in reversed(np.arange(0,l1+l2,dz)):
+for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     
     #Determining variables needed for shear stress and normal stress
     chord = ChordLength(cr,ct,l1,l2,z)
@@ -66,27 +65,27 @@ for z in reversed(np.arange(0,l1+l2,dz)):
     engineWeight = EngineWeight(me,g,z,l3)
     
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
-    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,True)
+#    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,False)
     
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(shearForce,moment,dz)
-
     #Calculating output (shearstress and normalstress)
-    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
-
+    print moment
     #Storing in 4D array
-    shearStressArray[i,:,:,:] = shearStress
+#    shearStressArray[i,:,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
-    i += 1
+    i -= 1
     
 maximum = np.amax(normalStressArray, axis = 2)
 minimum = np.amin(normalStressArray, axis = 2)
 
 maximum = np.amax(maximum, axis = 1)
 minimum = np.amin(minimum, axis = 1)
+
 #plt.plot(range(stepsZ),shearForce)
 
 plt.figure()
@@ -99,7 +98,7 @@ plt.figure()
 for i in range(2):
     chord = ChordLength(cr,ct,l1,l2,0)
     coordinates = XYCoordinates(chord,stepsXY,centroid)
-    plt.plot(coordinates[i*2+1,:],normalStressArray[0,i,:])
+    plt.plot(coordinates[i*2+1,:],normalStressArray[stepsZ-2,i,:])
 
 plt.xlabel("y (m) -->")
 plt.ylabel("sigma (Pa) -->")
@@ -107,6 +106,6 @@ plt.figure()
 for i in range(2,4):
     chord = ChordLength(cr,ct,l1,l2,0)
     coordinates = XYCoordinates(chord,stepsXY,centroid)
-    plt.plot(coordinates[i*2,:],normalStressArray[0,i,:])
+    plt.plot(coordinates[i*2,:],normalStressArray[stepsZ-2,i,:])
 plt.xlabel("x (m) -->")
 plt.ylabel("sigma (Pa) -->")

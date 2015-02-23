@@ -1,8 +1,8 @@
 def Lift(z,liftDist,l1,l2,cr,ct,c,Lift,dz):
     Lambda = float(liftDist/2.)/float(l2*(cr+ct)/2.)
     if(z<=l1 and z>=0): Lift = liftDist/2.
-    elif(z>l1 and z<=l1+l2): Lift -= Lambda*c*dz
-    else: raise IOError('z outside wing')
+    elif(z>l1 and z<l1+l2): Lift += Lambda*c*dz
+    elif(z == l1+l2): Lift = 0
     return Lift
 
 #unit test

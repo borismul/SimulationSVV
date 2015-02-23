@@ -3,7 +3,7 @@ def ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
     if (z >= 0 and z <= l1):
         # in this length all the shear forces act
         fuelmass = (l1 - z)/l1 * fuelliters * fueldensity * g # (N)
-        S_y = lift - engineWeight - fuelmass
+        S_y = lift + engineWeight - fuelmass
         S_x =  T
     elif (z >= l1 and z <= l3):
         #Only the engine + lift
