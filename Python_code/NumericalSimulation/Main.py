@@ -65,10 +65,10 @@ for z in reversed(np.arange(0,l1+l2,dz)):
     engineWeight = EngineWeight(me,g,z,l3)
     
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
-    coordinates = XYCoordinates(chord,stepsXY,centroid)    
-    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, coordinates,tFront,tTop,tRear,tBottom,True)
-    torque = Torque(T,h3,chord,shearForce)
+    coordinates = XYCoordinates(chord,stepsXY,centroid) 
     moment = Moment(shearForce,moment,dz)
+    shearFlow = ShearFlow(chord, shearForce, moment, shearCenter, I, coordinates,tFront,tTop,tRear,tBottom,True)
+    torque = Torque(T,h3,chord,shearForce)
 
     #Calculating output (shearstress and normalstress)
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
