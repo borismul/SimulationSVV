@@ -43,7 +43,7 @@ fueldensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 100
-stepsZ = 5
+stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = 0
 moment = 0
@@ -52,8 +52,9 @@ lift = 0
 #Creating arrays with zeros
 shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
 normalStressArray = np.zeros((stepsZ,4,stepsXY))
+
 #Looping through all cross-sections with stepsize dz
-for z in np.arange(0,l1+l2,dz):
+for z in reversed(np.arange(0,l1+l2,dz)):
     
     #Determining variables needed for shear stress and normal stress
     chord = ChordLength(cr,ct,l1,l2,z)
@@ -62,12 +63,13 @@ for z in np.arange(0,l1+l2,dz):
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     engineWeight = EngineWeight(me,g,z,l3)
+    
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     shearFlow = ShearFlow(chord, shearForce, shearCenter, I, coordinates,tFront,tTop,tRear,tBottom,True)
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(shearForce,moment,dz)
-    
+
     #Calculating output (shearstress and normalstress)
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
@@ -79,10 +81,18 @@ for z in np.arange(0,l1+l2,dz):
     #incrementing i with 1 every loop
     i += 1
     
-maximum = np.amax(normalStressArray, axis = 0)
+maximum = np.amax(normalStressArray, axis = 2)
+minimum = np.amin(normalStressArray, axis = 2)
 
+maximum = np.amax(maximum, axis = 1)
+minimum = np.amin(minimum, axis = 1)
+#plt.plot(range(stepsZ),shearForce)
+
+plt.figure()
 for i in range(4):
-    plt.plot(range(100),maximum[i,:])
+    plt.plot(range(stepsZ),maximum,"b")
+    plt.plot(range(stepsZ),minimum,"r")
+
 
 plt.figure()
 for i in range(2):
