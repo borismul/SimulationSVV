@@ -8,9 +8,10 @@ def ShearFlow(chordLength, shearForce, Moment, shearCenter, I, coordinates, tFro
     Ixx = I[0]
     Ixy = I[1]
     Iyy = I[2]
-#Extract Shear Forces
-    Sy = shearForce[0]
-    Sx = shearForce[1]
+#Extract Shear Forces and moments
+    Sx = shearForce[0]
+    Sy = shearForce[1]
+    
 #Define the constant for qb calculation
     constx = -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy**2)
     consty = -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy**2)
@@ -44,6 +45,7 @@ def ShearFlow(chordLength, shearForce, Moment, shearCenter, I, coordinates, tFro
     qbarray[2,:] = qbRear
     qbarray[3,:] = qbBottom
 #calculate qs0
+    w = moment[0]/    
     qs0 = 0
     for i in range(4):
         if i%2==0:
