@@ -15,7 +15,6 @@ from NormalStress import NormalStress
 from ShearCenter import ShearCenter
 from ShearFlow import ShearFlow
 from ShearForce import ShearForce
-from ShearStress import ShearStress
 from Torque import Torque
 from XYCoordinates import XYCoordinates
 
@@ -55,25 +54,27 @@ normalStressArray = np.zeros((stepsZ,4,stepsXY))
 #Looping through all cross-sections with stepsize dz
 for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     
-    #Determining variables needed for shear stress and normal stress
+    #Determining chord length, centroid and section ditribution at current cross-Section
     chord = ChordLength(cr,ct,l1,l2,z)
     centroid = Centroid(tFront,tRear,tTop,tBottom,chord)
+    coordinates = XYCoordinates(chord,stepsXY,centroid) 
+    
+    #Determining moment of inertia for shear and normal stress
     I = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
-    shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
+    
+    # determining Lift 
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     engineWeight = EngineWeight(me,g,z,l3)
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
-
-    coordinates = XYCoordinates(chord,stepsXY,centroid) 
     moment = Moment(shearForce,moment,dz)
-    shearFlow = ShearFlow(chord, shearForce, moment, shearCenter, I, coordinates,tFront,tTop,tRear,tBottom,True)
+#    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True)
     torque = Torque(T,h3,chord,shearForce)
     
     #Calculating output (shearstress and normalstress)
 #    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
-    print moment
-    #Storing in 4D array
+
+    #Storing in 4D/3D array
 #    shearStressArray[i,:,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
@@ -83,16 +84,12 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 maximum = np.amax(normalStressArray, axis = 2)
 minimum = np.amin(normalStressArray, axis = 2)
 
-maximum = np.amax(maximum, axis = 1)
-minimum = np.amin(minimum, axis = 1)
-
-#plt.plot(range(stepsZ),shearForce)
 
 plt.figure()
 for i in range(4):
-    plt.plot(range(stepsZ),maximum,"b")
-    plt.plot(range(stepsZ),minimum,"r")
-
+    plt.subplot(221+i)
+    plt.plot(range(stepsZ),maximum[:,i],"b")
+    plt.plot(range(stepsZ),minimum[:,i],"r")
 
 plt.figure()
 for i in range(2):
@@ -109,3 +106,5 @@ for i in range(2,4):
     plt.plot(coordinates[i*2,:],normalStressArray[stepsZ-2,i,:])
 plt.xlabel("x (m) -->")
 plt.ylabel("sigma (Pa) -->")
+
+

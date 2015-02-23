@@ -6,17 +6,17 @@ def XYCoordinates(chord,stepsXY,centroid):
     returnArray = np.zeros((8,stepsXY))
     #Front
     returnArray[0,:] = np.multiply(np.ones(stepsXY),(chord*0.25))-centroid[0]
-    returnArray[1,:] = yRange
+    returnArray[1,:] = yRange - centroid[1]
     #Rear
     returnArray[2,:] = -np.multiply(np.ones(stepsXY),(chord*0.25))-centroid[0]
-    returnArray[3,:] = yRange
+    returnArray[3,:] = yRange - centroid[1]
     #Top
-    returnArray[4,:] = xRange
+    returnArray[4,:] = xRange - centroid[0]
     returnArray[5,:] = np.multiply(np.ones(stepsXY),(chord*0.05))-centroid[1]
     #Bottom
-    returnArray[6,:] = xRange    
+    returnArray[6,:] = xRange -centroid[0]
     returnArray[7,:] = -np.multiply(np.ones(stepsXY),(chord*0.05))-centroid[1]
-
+    
     return returnArray
 
 #Unit Test
