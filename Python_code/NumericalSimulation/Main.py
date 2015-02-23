@@ -64,18 +64,19 @@ for z in reversed(np.arange(0,l1+l2,dz)):
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     engineWeight = EngineWeight(me,g,z,l3)
+    
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
-
-#    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,True)
+    shearFlow = ShearFlow(chord, shearForce, shearCenter, I, stepsXY,centroid,tFront,tTop,tRear,tBottom,True)
+    
     torque = Torque(T,h3,chord,shearForce)
     moment = Moment(shearForce,moment,dz)
 
     #Calculating output (shearstress and normalstress)
-#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
 
     #Storing in 4D array
-#   shearStressArray[i,:,:,:] = shearStress
+    shearStressArray[i,:,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop

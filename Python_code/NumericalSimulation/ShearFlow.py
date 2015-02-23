@@ -19,8 +19,8 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
         qbFront.append(qb)
     #Top
     qbTop = [qbFront[-1]]
-    for i in range(1,len(coordinates[5,:])):
-        qb = qbFront[-1] + consty * NumInt(coordinates[5,:],tTop*coordinates[4,:],coordinates[5,0],coordinates[5,i]) + constx * NumInt(coordinates[5,:],tTop*coordinates[5,:],coordinates[5,0],coordinates[5,i])
+    for i in range(1,len(coordinates[4,:])):
+        qb = qbFront[-1] + consty * NumInt(coordinates[4,:],tTop*coordinates[5,:],coordinates[4,0],coordinates[4,i]) + constx * NumInt(coordinates[4,:],tTop*coordinates[4,:],coordinates[4,0],coordinates[4,i])
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
@@ -29,8 +29,8 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
-    for i in range(1,len(coordinates[7,:])):
-        qb = qbRear[-1] + consty * NumInt(coordinates[7,:],tBottom*coordinates[6,:],coordinates[7,0],coordinates[7,i]) + constx * NumInt(coordinates[7,:],tBottom*coordinates[7,:],coordinates[7,0],coordinates[7,i])
+    for i in range(1,len(coordinates[6,:])):
+        qb = qbRear[-1] + consty * NumInt(coordinates[6,:],tBottom*coordinates[7,:],coordinates[6,0],coordinates[6,i]) + constx * NumInt(coordinates[6,:],tBottom*coordinates[6,:],coordinates[6,0],coordinates[6,i])
         qbBottom.append(qb)
     qbarray = np.zeros((4,len(qbFront)))
     qbarray[0,:] = qbFront
@@ -42,7 +42,7 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
         if i%2==0:
             qs0 += NumInt(coordinates[1,:],qbarray[i,:],coordinates[1,0],coordinates[1,-1])/(1.2*chordLength)
         else:
-            qs0 += NumInt(coordinates[5,:],qbarray[i,:],coordinates[5,0],coordinates[5,-1])/(1.2*chordLength)
+            qs0 += NumInt(coordinates[4,:],qbarray[i,:],coordinates[4,0],coordinates[4,-1])/(1.2*chordLength)
     qFront = qbFront+qs0
     qRear = qbRear+qs0
     qTop = qbTop+qs0
@@ -53,15 +53,18 @@ def ShearFlow(chordLength, shearForce, shearCenter, I, stepsXY,centroid, tFront,
     qarray[2,:] = qRear
     qarray[3,:] = qBottom
     #print qFront[0] - qBottom[-1]
+    label = str(chordLength)
     if plot == True:
+        plt.figure()
         plt.subplot(221)
-        plt.plot(coordinates[1,:],qFront)
+        plt.plot(coordinates[1,:],qFront, label = label)
         plt.subplot(222)
-        plt.plot(coordinates[1,:],qTop)
+        plt.plot(coordinates[4,:],qTop, label = label)
         plt.subplot(223)
-        plt.plot(coordinates[1,:],qRear)
+        plt.plot(coordinates[1,:],qRear, label = label)
         plt.subplot(224)
-        plt.plot(coordinates[1,:],qBottom)
+        plt.plot(coordinates[4,:],qBottom, label = label) ##Last picture does weird!?!
+        plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
         plot = False
     
     return qarray
