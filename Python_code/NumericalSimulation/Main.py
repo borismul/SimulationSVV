@@ -66,7 +66,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 
     coordinates = XYCoordinates(chord,stepsXY,centroid) 
     moment = Moment(shearForce,moment,dz)
-    shearFlow = ShearFlow(chord, shearForce, moment, shearCenter, I, coordinates,tFront,tTop,tRear,tBottom,True)
+    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
     torque = Torque(T,h3,chord,shearForce)
     
     #Calculating output (shearstress and normalstress)
