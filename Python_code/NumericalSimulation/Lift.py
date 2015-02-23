@@ -22,4 +22,3 @@ def Lift(z,liftDist,l1,l2,cr,ct,c,Lift,dz):
 #    x = np.arange(0,20.1,0.1)
 #plt.plot(x,lift)
 #plt.show()
-
