@@ -1,3 +1,10 @@
+'''
+This program calculates the centroid of the wingbox at one spanwise location.
+
+Input variables: thicknesses of the wingbox webs and spars, local chord
+Output variables: x and y coordinates of the centroid as
+Output format: [float,float]
+'''
 def Centroid(tFront,tRear,tTop,tBottom,c):
 #check for unusually large thicknesses
     if(tFront >= 0.5 or tRear >= 0.5 or tTop >= 0.1 or tBottom >=0.1):
@@ -41,9 +48,23 @@ def Centroid(tFront,tRear,tTop,tBottom,c):
     return centroid
 
 #unit test
-#tFront = 0.001
-#tTop = 0.001
-#tRear = 0.001
-#tBottom = 0.001
-#c = 10
-#print Centroid(tFront,tRear,tTop,tBottom,c)
+##Test for equal thicknesses on each side. centroid = middle = [0,0]
+tFront = 0.001
+tTop = 0.001
+tRear = 0.001
+tBottom = 0.001
+c = 10
+if Centroid(tFront,tRear,tTop,tBottom,c) == [0,0]:
+    unit = True
+else: unit = False
+##Test for only one contribution of top spar. centroid = centroid of the top spar = [0,0.495]
+tFront = 0.000
+tTop = 0.001
+tRear = 0.000
+tBottom = 0.000
+c = 10
+if Centroid(tFront,tRear,tTop,tBottom,c) == [0,0.495]:
+    unit = True
+else: unit = False
+
+if unit == False: raise IOError('unit test Centroid False')

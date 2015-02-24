@@ -15,9 +15,13 @@ from Lift import Lift
 from Moment import Moment
 from MomentOfInertia import MomentOfInertia
 from NormalStress import NormalStress
+<<<<<<< HEAD
 from PlotImportantGraphs import PlotImportantGraphs
 from PlotUnitTests import PlotUnitTests
 from ShearCenter import ShearCenter
+=======
+from ShearStress import ShearStress
+>>>>>>> 663842d3d6f26d5f5b47f523dae725885cdac60e
 from ShearFlow import ShearFlow
 from ShearForce import ShearForce
 from Torque import Torque
@@ -46,15 +50,20 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
+<<<<<<< HEAD
 stepsXY = 1000
 stepsZ = 1000
+=======
+stepsXY = 100
+stepsZ = 5
+>>>>>>> 663842d3d6f26d5f5b47f523dae725885cdac60e
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
 lift = 0
 
 #Creating arrays with zeros
-shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
+shearStressArray = np.zeros((stepsZ,4,stepsXY))
 normalStressArray = np.zeros((stepsZ,4,stepsXY))
 momentArray = np.zeros((stepsZ,2))
 liftArray = np.zeros((stepsZ,1))
@@ -91,24 +100,45 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     moment = Moment(shearForce,moment,dz)
     momentArray[i] = moment
     
+    #deteriming the shearflow and Torque for shear stress calculation
+    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
+    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
+    
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     
-    #deteriming the shearflow and Torque for shear stress calculation
-#    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
-    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
-        
     #Calculating output (shearstress and normalstress)
-#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
 
     #Storing outputs in 4D/3D array
-#    shearStressArray[i,:,:,:] = shearStress
+    shearStressArray[i,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i -= 1
+    
+maximum = np.amax(normalStressArray, axis = 2)
+minimum = np.amin(normalStressArray, axis = 2)
+maxshear = np.amax(shearStressArray, axis = 2)
+minshear = np.amin(shearStressArray, axis = 2)
 
+label = str(chord)
+plt.figure()
+for i in range(4):
+    if i%2 == 0:
+        plt.subplot(221+i)
+        plt.plot(coordinates[1,:],shearStress[i,:], label = label)
+    else:
+        plt.subplot(221+i)
+        plt.plot(coordinates[4,:],shearStress[i,:], label = label)
+plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
+
+plt.figure()
+for i in range(4):
+    plt.subplot(221+i)
+    plt.plot(range(stepsZ),maxshear[:,i],"b")
+    plt.plot(range(stepsZ),minshear[:,i],"r")
 
 PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray)
 PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray)
