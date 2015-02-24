@@ -5,7 +5,6 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
     import numpy as np
     import matplotlib.pyplot as plt
     import math as m
-    print torque
 #Extract Moments of Inertia
     Ixx = I[0]
     Ixy = I[1]
@@ -55,8 +54,6 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
         else:
             qbint += NumInt(coordinates[4,:],coordinates[i+3,:]*qbarray[i,:],coordinates[4,0],coordinates[4,-1])
     A = (coordinates[0,0]-coordinates[2,0])*(coordinates[5,0]-coordinates[7,0])
-    print torque
-    print qbint
     qs0 = (torque - qbint)/(2*A)
     qFront = qbFront+qs0
     qRear = qbRear+qs0
@@ -67,19 +64,6 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
     qarray[1,:] = qTop
     qarray[2,:] = qRear
     qarray[3,:] = qBottom
-    label = str(chordLength)
-    if plot == True:
-        plt.figure()
-        plt.subplot(221)
-        plt.plot(coordinates[1,:],qFront, label = label)
-        plt.subplot(222)
-        plt.plot(coordinates[4,:],qTop, label = label)
-        plt.subplot(223)
-        plt.plot(coordinates[1,:],qRear, label = label)
-        plt.subplot(224)
-        plt.plot(coordinates[4,:],qBottom, label = label)
-        plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
-        plot = False
     
     return qarray
 #    for y in coordinates[:,1]:

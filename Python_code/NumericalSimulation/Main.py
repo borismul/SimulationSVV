@@ -12,7 +12,7 @@ from Lift import Lift
 from Moment import Moment
 from MomentOfInertia import MomentOfInertia
 from NormalStress import NormalStress
-from ShearCenter import ShearCenter
+from ShearStress import ShearStress
 from ShearFlow import ShearFlow
 from ShearForce import ShearForce
 from Torque import Torque
@@ -41,7 +41,7 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 1000
+stepsXY = 100
 stepsZ = 5
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
@@ -49,7 +49,7 @@ moment = [0,0]
 lift = 0
 
 #Creating arrays with zeros
-shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
+shearStressArray = np.zeros((stepsZ,4,stepsXY))
 normalStressArray = np.zeros((stepsZ,4,stepsXY))
 
 #Looping through all cross-sections with stepsize dz
@@ -71,18 +71,17 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     shearForce = ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight)
     
     moment = Moment(shearForce,moment,dz)
-    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
-    print torque    
+    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)  
     shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
 #    plt.plot(i,moment[0],"ob")
 #    plt.plot(i,shearForce[1],"or")
     
     #Calculating output (shearstress and normalstress)
-    #shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
 
     #Storing in 4D/3D array
-    #shearStressArray[i,:,:,:] = shearStress
+    shearStressArray[i,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
@@ -90,7 +89,25 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     
 maximum = np.amax(normalStressArray, axis = 2)
 minimum = np.amin(normalStressArray, axis = 2)
+maxshear = np.amax(shearStressArray, axis = 2)
+minshear = np.amin(shearStressArray, axis = 2)
 
+label = str(chord)
+plt.figure()
+for i in range(4):
+    if i%2 == 0:
+        plt.subplot(221+i)
+        plt.plot(coordinates[1,:],shearStress[i,:], label = label)
+    else:
+        plt.subplot(221+i)
+        plt.plot(coordinates[4,:],shearStress[i,:], label = label)
+plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
+
+plt.figure()
+for i in range(4):
+    plt.subplot(221+i)
+    plt.plot(range(stepsZ),maxshear[:,i],"b")
+    plt.plot(range(stepsZ),minshear[:,i],"r")
 
 plt.figure()
 for i in range(4):
