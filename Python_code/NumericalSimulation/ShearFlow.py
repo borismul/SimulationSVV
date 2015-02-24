@@ -1,16 +1,18 @@
 #Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
-def ShearFlow(chordLength, shearForce, Moment, shearCenter, I, coordinates, tFront, tTop, tRear, tBottom,plot):
+def ShearFlow(chordLength, shearForce, moment, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep):
 #Import functions needed
     from NumInt import NumInt
     import numpy as np
     import matplotlib.pyplot as plt
+    import math as m
 #Extract Moments of Inertia
     Ixx = I[0]
     Ixy = I[1]
     Iyy = I[2]
-#Extract Shear Forces
-    Sy = shearForce[0]
-    Sx = shearForce[1]
+#Extract Shear Forces and moments
+    Sx = shearForce[0]
+    Sy = shearForce[1]
+    Mx = moment[0]
 #Define the constant for qb calculation
     constx = -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy**2)
     consty = -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy**2)
