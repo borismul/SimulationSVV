@@ -15,13 +15,10 @@ from Lift import Lift
 from Moment import Moment
 from MomentOfInertia import MomentOfInertia
 from NormalStress import NormalStress
-<<<<<<< HEAD
 from PlotImportantGraphs import PlotImportantGraphs
 from PlotUnitTests import PlotUnitTests
 from ShearCenter import ShearCenter
-=======
 from ShearStress import ShearStress
->>>>>>> 663842d3d6f26d5f5b47f523dae725885cdac60e
 from ShearFlow import ShearFlow
 from ShearForce import ShearForce
 from Torque import Torque
@@ -50,13 +47,8 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-<<<<<<< HEAD
-stepsXY = 1000
-stepsZ = 1000
-=======
 stepsXY = 100
 stepsZ = 5
->>>>>>> 663842d3d6f26d5f5b47f523dae725885cdac60e
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
