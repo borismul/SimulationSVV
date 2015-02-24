@@ -1,10 +1,11 @@
 #Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
-def ShearFlow(chordLength, shearForce, moment, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep):
+def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep):
 #Import functions needed
     from NumInt import NumInt
     import numpy as np
     import matplotlib.pyplot as plt
     import math as m
+    print torque
 #Extract Moments of Inertia
     Ixx = I[0]
     Ixy = I[1]
@@ -12,7 +13,6 @@ def ShearFlow(chordLength, shearForce, moment, I, coordinates, tFront, tTop, tRe
 #Extract Shear Forces and moments
     Sx = shearForce[0]
     Sy = shearForce[1]
-    Mx = moment[0]
 #Define the constant for qb calculation
     constx = -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy**2)
     consty = -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy**2)
@@ -45,13 +45,19 @@ def ShearFlow(chordLength, shearForce, moment, I, coordinates, tFront, tTop, tRe
     qbarray[1,:] = qbTop
     qbarray[2,:] = qbRear
     qbarray[3,:] = qbBottom
-#calculate qs0
-    qs0 = 0
+#Calculate qs0
+    #Set an initial value for integration
+    qbint = 0
+    #Calculate int(p*qb)ds
     for i in range(4):
         if i%2==0:
-            qs0 += NumInt(coordinates[1,:],qbarray[i,:],coordinates[1,0],coordinates[1,-1])/(1.2*chordLength)
+            qbint += NumInt(coordinates[1,:],coordinates[i,:]*qbarray[i,:],coordinates[1,0],coordinates[1,-1])
         else:
-            qs0 += NumInt(coordinates[4,:],qbarray[i,:],coordinates[4,0],coordinates[4,-1])/(1.2*chordLength)
+            qbint += NumInt(coordinates[4,:],coordinates[i+3,:]*qbarray[i,:],coordinates[4,0],coordinates[4,-1])
+    A = (coordinates[0,0]-coordinates[2,0])*(coordinates[5,0]-coordinates[7,0])
+    print torque
+    print qbint
+    qs0 = (torque - qbint)/(2*A)
     qFront = qbFront+qs0
     qRear = qbRear+qs0
     qTop = qbTop+qs0
@@ -71,7 +77,7 @@ def ShearFlow(chordLength, shearForce, moment, I, coordinates, tFront, tTop, tRe
         plt.subplot(223)
         plt.plot(coordinates[1,:],qRear, label = label)
         plt.subplot(224)
-        plt.plot(coordinates[4,:],qBottom, label = label) ##Last picture does weird!?!
+        plt.plot(coordinates[4,:],qBottom, label = label)
         plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
         plot = False
     

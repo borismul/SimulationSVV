@@ -7,18 +7,23 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         wl = Mx/Sy
         xl = wl * m.atan(sweep)
         Torque = lift*(coordinates[0,0]-xl)
+        return Torque
     elif (z >= l1 and z <= l3):
         ww = l3-z
         wl = (Mx+engineWeight*ww)/lift
         xl =  wl * m.atan(sweep)
         xw = ww * m.atan(sweep)
         Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) + Sx*h3
+        return Torque
     elif (z >= 0 and z <= l1):
         ww = l3-z
         wl = (Mx/Sy+engineWeight/Sy*ww)/(1+engineWeight/Sy)
         xl = (wl-(l1-z)) * m.atan(sweep)
         xw = (ww-(l1-z)) * m.atan(sweep)
         Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*centroid[0] + Sx*h3
-    return Torque
+        #print Torque        
+        return Torque
+    else:
+        return 0
 #unit test
 import math as m

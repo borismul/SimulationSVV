@@ -42,7 +42,7 @@ fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 1000
-stepsZ = 100
+stepsZ = 5
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -69,20 +69,20 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 
     fuelWeight = FuelWeight(l1,z,fuelLiters,fuelDensity,g)
     shearForce = ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight)
-
-    coordinates = XYCoordinates(chord,stepsXY,centroid) 
+    
     moment = Moment(shearForce,moment,dz)
-    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
     torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
+    print torque    
+    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
 #    plt.plot(i,moment[0],"ob")
-    plt.plot(i,shearForce[1],"or")
+#    plt.plot(i,shearForce[1],"or")
     
     #Calculating output (shearstress and normalstress)
-#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+    #shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
 
     #Storing in 4D/3D array
-#    shearStressArray[i,:,:,:] = shearStress
+    #shearStressArray[i,:,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop

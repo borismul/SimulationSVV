@@ -10,7 +10,7 @@ def ChordLength(Croot,Ctip,l1,l2,z):
         return (Cz)
     ## If z is not within the span length of the wingbox, it returns 0
     else:
-        print ("z is outside the range")
+        IOError("z is outside the range")
         return 0
 
 #unit test
