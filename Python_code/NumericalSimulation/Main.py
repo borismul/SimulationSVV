@@ -18,6 +18,7 @@ from ShearForce import ShearForce
 from ShearStress import ShearStress
 from Torque import Torque
 from XYCoordinates import XYCoordinates
+from FuelWeight import FuelWeight
 
 plt.close("all")
 
@@ -37,8 +38,8 @@ tBottom = 0.002 #(-)
 g = 9.81 #(m/s^2)
 liftDist = 193*10**3*g/2 #(N)
 T = 64*10**3 #(N)
-fuelliters = 7500 # (liters)
-fueldensity = 0.81 # (kg/liter)
+fuelLiters = 7500 # (liters)
+fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 1000
@@ -62,12 +63,13 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     shearCenter = ShearCenter(tFront,tRear,tTop,tBottom,I,chord)
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     engineWeight = EngineWeight(me,g,z,l3)
-    shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
+    fuelWeight = FuelWeight(l1,z,fuelLiters,fuelDensity,g)
+    shearForce = ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight)
 
     coordinates = XYCoordinates(chord,stepsXY,centroid) 
     moment = Moment(shearForce,moment,dz)
     shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
-    torque = Torque(T,h3,chord,shearForce)
+    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
     
     #Calculating output (shearstress and normalstress)
 #    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
