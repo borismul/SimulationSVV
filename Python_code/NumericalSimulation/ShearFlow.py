@@ -1,5 +1,5 @@
 #Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
-def ShearFlow(chordLength, shearForce, moment, I, coordinates, tFront, tTop, tRear, tBottom,l1,l2,l3,plot, sweep):
+def ShearFlow(chordLength, shearForce, moment, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep):
 #Import functions needed
     from NumInt import NumInt
     import numpy as np
