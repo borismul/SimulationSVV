@@ -25,7 +25,7 @@ Ctip = 1
 l1 = 1
 l2 = 1
 #test at root, end of constant part, halfway the taper and tip
-z = [0,l1,(l1+l2)/2,l1+l2]
+z = [0,l1,l1+l2/2.,l1+l2]
 output = []
 expectedOutput = [2,2,1.5,1]
 for i in z:
@@ -33,4 +33,4 @@ for i in z:
 if output == expectedOutput:
     unit = True
 else: unit = False
-if unit == False: IOError('unit test ChordLength False')
+if unit == False: raise IOError('unit test ChordLength False')

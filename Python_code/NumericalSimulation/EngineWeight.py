@@ -7,7 +7,7 @@ Output format: float
 '''
 def EngineWeight(mEngine,g,z,l3):
     #Engine weight acts only from the root to l3 (where the engine is suspended)
-    if(z>0 and z <= l3):
+    if(z>=0 and z <= l3):
         engineWeight = mEngine*g
         return engineWeight
     else:
@@ -15,9 +15,9 @@ def EngineWeight(mEngine,g,z,l3):
         return 0
 
 #unit test
-mEngine = 1
-g = 10
-l3 = 1
+mEngine = 1.
+g = 10.
+l3 = 1.
 #test at root, place where engine is suspended and furter towards tip
 z = [0,l3,l3+1]
 output = []
@@ -27,4 +27,4 @@ for i in z:
 if output == expectedOutput:
     unit = True
 else: unit = False
-if unit == False: IOError('unit test EngineWeight False')
+if unit == False: raise IOError('unit test EngineWeight False')

@@ -67,4 +67,4 @@ if Centroid(tFront,tRear,tTop,tBottom,c) == [0,0.495]:
     unit = True
 else: unit = False
 
-if unit == False: IOError('unit test Centroid False')
+if unit == False: raise IOError('unit test Centroid False')

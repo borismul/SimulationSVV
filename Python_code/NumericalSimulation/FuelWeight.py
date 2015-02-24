@@ -6,7 +6,7 @@ Output variables: shearforce due to the fuel weight
 Output format: float
 '''
 def FuelWeight(l1,z,fuelLiters,fuelDensity,g):
-    if (z>0 and z<=l1):
+    if (z>=0 and z<=l1):
         fuelWeight = (l1 - z)/l1 * fuelLiters * fuelDensity * g
         return fuelWeight
     else:
@@ -14,7 +14,7 @@ def FuelWeight(l1,z,fuelLiters,fuelDensity,g):
         return 0
 
 #unit test
-l1 = 1
+l1 = 1.
 #test at root, halfway the section where the fuel is, at the end of the fuel and further toward the tip
 z = [0,l1/2,l1,l1+1]
 fuelLiters = 1
@@ -27,4 +27,4 @@ for i in z:
 if output == expectedOutput:
     unit = True
 else: unit = False
-if unit == False: IOError('unit test ChordLength False')
+if unit == False: raise IOError('unit test FuelWeight False')
