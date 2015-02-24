@@ -30,7 +30,7 @@ l3 = 9.7 #(m)
 h3 = 2.14 #(m)
 me = 5765 #(kg)
 tFront = 0.005 #(-)
-tRear = 0.003 #(-)
+tRear = 0.003 #(-)5
 tTop = 0.002 #(-)
 tBottom = 0.002 #(-)
 g = 9.81 #(m/s^2)
@@ -41,10 +41,10 @@ fueldensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 1000
-stepsZ = 5
+stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
-moment = 0
+moment = [0,0]
 lift = 0
 
 #Creating arrays with zeros
@@ -67,8 +67,9 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     engineWeight = EngineWeight(me,g,z,l3)
     shearForce = ShearForce(lift, engineWeight, T, fuelliters, fueldensity, l1, l2, l3, z, g)
     moment = Moment(shearForce,moment,dz)
-
-    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
+#    plt.plot(i,moment[0],"ob")
+    plt.plot(i,shearForce[1],"or")
+#    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
     torque = Torque(moment,sweep,T,h3,chord,l1,l2,l3,shearForce)
     
     #Calculating output (shearstress and normalstress)
