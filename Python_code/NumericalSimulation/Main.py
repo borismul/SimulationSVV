@@ -1,3 +1,6 @@
+import os
+clear = lambda: os.system('cls')
+clear()
 
 #Importing Python definitions
 import numpy as np
@@ -12,6 +15,8 @@ from Lift import Lift
 from Moment import Moment
 from MomentOfInertia import MomentOfInertia
 from NormalStress import NormalStress
+from PlotImportantGraphs import PlotImportantGraphs
+from PlotUnitTests import PlotUnitTests
 from ShearCenter import ShearCenter
 from ShearFlow import ShearFlow
 from ShearForce import ShearForce
@@ -42,7 +47,7 @@ fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 1000
-stepsZ = 100
+stepsZ = 1000
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -51,6 +56,10 @@ lift = 0
 #Creating arrays with zeros
 shearStressArray = np.zeros((stepsZ,4,2,stepsXY))
 normalStressArray = np.zeros((stepsZ,4,stepsXY))
+momentArray = np.zeros((stepsZ,2))
+liftArray = np.zeros((stepsZ,1))
+shearForceArray = np.zeros((stepsZ,2))
+IArray = np.zeros((stepsZ,3))
 
 #Looping through all cross-sections with stepsize dz
 for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
@@ -58,60 +67,49 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     #Determining chord length, centroid and section ditribution at current cross-Section
     chord = ChordLength(cr,ct,l1,l2,z)
     centroid = Centroid(tFront,tRear,tTop,tBottom,chord)
-    coordinates = XYCoordinates(chord,stepsXY,centroid) 
+    coordinates = XYCoordinates(chord,stepsXY,centroid)
     
-    #Determining moment of inertia for shear and normal stress
+    #Determining moment of inertia for shear and normal stress and storing it in array
     I = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
+    IArray[i]= I
     
-    # determining Lift 
+    # determining Lift for shear force distribution and storing in array
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
-    engineWeight = EngineWeight(me,g,z,l3)
-
-    fuelWeight = FuelWeight(l1,z,fuelLiters,fuelDensity,g)
-    shearForce = ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight)
-
-    coordinates = XYCoordinates(chord,stepsXY,centroid) 
-    moment = Moment(shearForce,moment,dz)
-    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
-    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
-#    plt.plot(i,moment[0],"ob")
-    plt.plot(i,shearForce[1],"or")
+    liftArray[i] = lift
     
+    #determining engineWeight for shear force
+    engineWeight = EngineWeight(me,g,z,l3)
+    
+    #determining engineWeight for shear force
+    fuelWeight = FuelWeight(l1,z,fuelLiters,fuelDensity,g)
+    
+    #determining shearForce for moment distribution and shearflow, storing in array
+    shearForce = ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight)
+    shearForceArray[i] = shearForce
+    
+    #determining moment in the wingbox to be able to calculate the normal stresses and storing in array
+    moment = Moment(shearForce,moment,dz)
+    momentArray[i] = moment
+    
+    #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
+    coordinates = XYCoordinates(chord,stepsXY,centroid)    
+    
+    #deteriming the shearflow and Torque for shear stress calculation
+#    shearFlow = ShearFlow(chord, shearForce, moment, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
+    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
+        
     #Calculating output (shearstress and normalstress)
 #    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
 
-    #Storing in 4D/3D array
+    #Storing outputs in 4D/3D array
 #    shearStressArray[i,:,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i -= 1
-    
-maximum = np.amax(normalStressArray, axis = 2)
-minimum = np.amin(normalStressArray, axis = 2)
 
 
-plt.figure()
-for i in range(4):
-    plt.subplot(221+i)
-    plt.plot(range(stepsZ),maximum[:,i],"b")
-    plt.plot(range(stepsZ),minimum[:,i],"r")
-
-plt.figure()
-for i in range(2):
-    chord = ChordLength(cr,ct,l1,l2,0)
-    coordinates = XYCoordinates(chord,stepsXY,centroid)
-    plt.plot(coordinates[i*2+1,:],normalStressArray[stepsZ-2,i,:])
-
-plt.xlabel("y (m) -->")
-plt.ylabel("sigma (Pa) -->")
-plt.figure()
-for i in range(2,4):
-    chord = ChordLength(cr,ct,l1,l2,0)
-    coordinates = XYCoordinates(chord,stepsXY,centroid)
-    plt.plot(coordinates[i*2,:],normalStressArray[stepsZ-2,i,:])
-plt.xlabel("x (m) -->")
-plt.ylabel("sigma (Pa) -->")
-
+PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray)
+PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray)
 

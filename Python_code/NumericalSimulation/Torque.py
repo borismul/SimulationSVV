@@ -19,6 +19,7 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         xl = (wl-(l1-z)) * m.atan(sweep)
         xw = (ww-(l1-z)) * m.atan(sweep)
         Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*centroid[0] + Sx*h3
+    else: Torque = 0
     return Torque
 #unit test
 import math as m
