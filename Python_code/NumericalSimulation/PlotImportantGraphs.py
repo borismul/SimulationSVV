@@ -1,8 +1,8 @@
-def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray):
+def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,plt):
     import numpy as np
-    import matplotlib.pyplot as plt
     
     # plotting shearforce vs z coordinate
+    plt.figure()
     shearForceLabels = ['Sx','Sy']
     for i in range(2):
         plt.plot(np.multiply(range(stepsZ),(l1+l2)/stepsZ),shearForceArray[:,i],label = shearForceLabels[i])
@@ -27,12 +27,12 @@ def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArr
     minimum = np.amin(normalStressArray, axis = 2)    
     
     # plotting maximal and minimal stress in all all four sides of the wingbox vs z coordinate
-    normalStressLabels = ['Maximum and minimum normal stresses in front spar vs z coordinate','Maximum and minimum normal stresses in rear spar vs z coordinate','Maximum and minimum normal stresses in top spar vs z coordinate','Maximum and minimum normal stresses in bottom spar vs z coordinate']    
+    normalStressTitles = ['Maximum and minimum normal stresses in front spar vs z coordinate','Maximum and minimum normal stresses in rear spar vs z coordinate','Maximum and minimum normal stresses in top spar vs z coordinate','Maximum and minimum normal stresses in bottom spar vs z coordinate']    
     for i in range(4):
         plt.subplot(221+i)
         plt.plot(np.multiply(range(stepsZ),(l1+l2)/stepsZ),maximum[:,i],'b',label = 'maximum')
         plt.plot(np.multiply(range(stepsZ),(l1+l2)/stepsZ),minimum[:,i],'r',label = 'minimum')
-        plt.title = normalStressLabels[i]
+        plt.title(normalStressTitles[i])
         plt.xlabel('z (m) -->')
         plt.ylabel('Normal Stress (N/m^2) -->')
         if (i==3):

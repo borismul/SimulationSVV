@@ -5,7 +5,6 @@ clear()
 #Importing Python definitions
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy as sp
 
 #Importing own definitions
 from Centroid import Centroid
@@ -24,6 +23,8 @@ from ShearForce import ShearForce
 from Torque import Torque
 from XYCoordinates import XYCoordinates
 from FuelWeight import FuelWeight
+from ValidationData import ValidationData
+
 
 plt.close("all")
 
@@ -48,7 +49,7 @@ fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 100
-stepsZ = 5
+stepsZ = 1000
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -94,44 +95,43 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     
     #deteriming the shearflow and Torque for shear stress calculation
     torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
-    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
+#    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,True,sweep)
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     
     #Calculating output (shearstress and normalstress)
-    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
 
     #Storing outputs in 4D/3D array
-    shearStressArray[i,:,:] = shearStress
+#    shearStressArray[i,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i -= 1
     
-maximum = np.amax(normalStressArray, axis = 2)
-minimum = np.amin(normalStressArray, axis = 2)
 maxshear = np.amax(shearStressArray, axis = 2)
 minshear = np.amin(shearStressArray, axis = 2)
 
-label = str(chord)
+#label = str(chord)
+#plt.figure()
+#for i in range(4):
+#    if i%2 == 0:
+#        plt.subplot(221+i)
+#        plt.plot(coordinates[1,:],shearStress[i,:], label = label)
+#    else:
+#        plt.subplot(221+i)
+#        plt.plot(coordinates[4,:],shearStress[i,:], label = label)
+#plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
+#
+#plt.figure()
+#for i in range(4):
+#    plt.subplot(221+i)
+#    plt.plot(range(stepsZ),maxshear[:,i],"b")
+#    plt.plot(range(stepsZ),minshear[:,i],"r")
+
+PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,plt)
+PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,plt)
 plt.figure()
-for i in range(4):
-    if i%2 == 0:
-        plt.subplot(221+i)
-        plt.plot(coordinates[1,:],shearStress[i,:], label = label)
-    else:
-        plt.subplot(221+i)
-        plt.plot(coordinates[4,:],shearStress[i,:], label = label)
-plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
-
-plt.figure()
-for i in range(4):
-    plt.subplot(221+i)
-    plt.plot(range(stepsZ),maxshear[:,i],"b")
-    plt.plot(range(stepsZ),minshear[:,i],"r")
-
-PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray)
-PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray)
-
+ValidationData()

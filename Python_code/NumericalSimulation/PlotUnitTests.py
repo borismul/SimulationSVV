@@ -1,9 +1,7 @@
-def PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray):
+def PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,plt):
     import numpy as np
-    import matplotlib.pyplot as plt
     
     # plotting moment of inertia vs z coordinate
-    plt.figure()
     IplotLabels = ['Ixx','Ixy','Iyy']
     for i in range(3):
         plt.plot(np.multiply(range(stepsZ),(l1+l2)/stepsZ),IArray[:,i], label = IplotLabels[i])
