@@ -1,5 +1,5 @@
 #Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
-def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, sweep, stepsXY):
+def ShearFlow(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, tRear, tBottom, plot, sweep, stepsXY):
 #Import functions needed
     import numpy as np
     import matplotlib.pyplot as plt
@@ -9,8 +9,8 @@ def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, s
     Ixy = I[1]
     Iyy = I[2]
 #Extract Shear Forces and moments
-    Sx = S[0]
-    Sy = S[1]
+    Sx = ShearForce[0]
+    Sy = ShearForce[1]
 #Define the constant for qb calculation
     constx = -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy**2)
     consty = -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy**2)
@@ -22,22 +22,22 @@ def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, s
 #Calculate the shear stresses qb
     #Front
     qbFront = [0]
-    for y in np.arange(0.,0.1*chord,dy):
+    for y in np.arange(0.,0.1*chordLength,dy):
         qb += consty * tFront * y * dy
         qbFront.append(qb)
     #Top
     qbTop = [qbFront[-1]]
-    for x in np.arange(0.,-0.5*chord,dx):
-        qb += consty * tFront * 0.1*chord * dx + constx * tFront * x * dx
+    for x in np.arange(0.,-0.5*chordLength,dx):
+        qb += consty * tFront * 0.1*chordLength * dx + constx * tFront * x * dx
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
-    for y in np.arange(0.1*chord,0.,dy):
-        qb += consty * tFront * y * dy + constx * tFront * -0.5*chord * dy
+    for y in np.arange(0.1*chordLength,0.,dy):
+        qb += consty * tFront * y * dy + constx * tFront * -0.5*chordLength * dy
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
-    for x in np.arange(-0.5*chord, 0.,dx):
+    for x in np.arange(-0.5*chordLength, 0.,dx):
         qb += constx * tFront * x * dx
         qbBottom.append(qb)
     print len(qbBottom),len(qbFront)
@@ -53,15 +53,15 @@ def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, s
     qbint = 0
     #Calculate int(p*qb)ds
     for i in range(0,stepsXY):
-        qbint += 0.1*chord * qbTop[i] * dx
+        qbint += 0.1*chordLength * qbTop[i] * dx
         
     for i in range(0,stepsXY):
-        qbint += -0.5*chord * qbRear[i] * dy
+        qbint += -0.5*chordLength * qbRear[i] * dy
     #The area I literally copied from Twan.
     A = (coordinates[0,0]-coordinates[2,0])*(coordinates[5,0]-coordinates[7,0])
 
     #I found qb around the bottom left corner, so I have to account for that now
-    qs0 = (T - qbint)/(2*A)
+    qs0 = (Torque2 - qbint)/(2*A)
     qFront = qbFront+qs0
     qRear = qbRear+qs0
     qTop = qbTop+qs0

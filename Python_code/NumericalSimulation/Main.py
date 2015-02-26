@@ -19,8 +19,10 @@ from PlotUnitTests import PlotUnitTests
 from ShearCenter import ShearCenter
 from ShearStress import ShearStress
 from ShearFlow import ShearFlow
+from ShearFlow2 import ShearFlow2
 from ShearForce import ShearForce
 from Torque import Torque
+from Torque2 import Torque2
 from XYCoordinates import XYCoordinates
 from FuelWeight import FuelWeight
 from ValidationData import ValidationData
