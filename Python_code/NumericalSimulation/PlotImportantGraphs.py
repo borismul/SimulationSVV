@@ -38,4 +38,3 @@ def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArr
         if (i==3):
             plt.legend(loc = 2)
         else: plt.legend()
-    plt.figure()

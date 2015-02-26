@@ -48,8 +48,8 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 10
-stepsZ = 1000
+stepsXY = 11
+stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -133,6 +133,6 @@ minshear = np.amin(shearStressArray, axis = 2)
 #    plt.plot(range(stepsZ),maxshear[:,i],"b")
 #    plt.plot(range(stepsZ),minshear[:,i],"r")
 
-#PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,plt)
+PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,plt)
 PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,torqueArray,plt)
-#ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
+ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
