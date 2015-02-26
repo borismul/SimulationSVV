@@ -1,4 +1,4 @@
-def PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,torque,plt):
+def PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torque,plt):
     import numpy as np
     
     # plotting moment of inertia vs z coordinate
@@ -45,3 +45,20 @@ def PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,to
     plt.title('Torque vs z coordinate')
     plt.xlabel('z (m) -->')
     plt.ylabel('Torque (Nm) -->')
+    
+    # plotting shearstresses in root chord along x and y
+    plt.figure()
+    shearStressTitles = ['shear stress at root chord vs y location in front web','shear stress at root chord vs y location in rear web','shear stress at root chord vs x location in top web','shear stress at root chord vs x location in bottom web']
+    for i in range(2):
+        plt.subplot(221+i)
+        plt.plot(coordinates[1,:],shearStressArray[0,i,:])
+        plt.title(shearStressTitles[i])
+        plt.xlabel('y location (m) -->')
+        plt.ylabel('shear stress (N/m^2) -->')
+            
+    for i in range(2,4):
+        plt.subplot(221+i)
+        plt.plot(coordinates[4,:],shearStressArray[0,i,:])
+        plt.title(shearStressTitles[i])
+        plt.xlabel('x location (m) -->')
+        plt.ylabel('shear stress (N/m^2) -->')

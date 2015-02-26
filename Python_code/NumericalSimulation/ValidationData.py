@@ -26,8 +26,8 @@ def ValidationData(normalStress,shearStress,l1,l2,stepsZ,stepsXY):
     topNormalStress = normalStress[:,2,int(stepsXY/2.)]
     topShearStress = shearStress[:,2,int(stepsXY/2.)]
     
-    vonMissesFront = np.sqrt(np.square(frontNormalStress) + 3.*np.square(frontShearStress))
-    vonMissesTop = np.sqrt(np.square(topNormalStress) + 3.*np.square(topShearStress))
+    vonMissesFront = np.sqrt(np.square(frontNormalStress) + 3*np.square(frontShearStress))
+    vonMissesTop = np.sqrt(np.square(topNormalStress) + 3*np.square(topShearStress))
     
     plt.plot(np.multiply(range(stepsZ),(l1+l2)/stepsZ),vonMissesFront,label = 'Front numerical calculation')
     plt.plot(np.multiply(range(stepsZ),(l1+l2)/stepsZ),vonMissesTop,label = 'Top numerical calculation')
