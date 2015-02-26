@@ -55,4 +55,9 @@ tTop = 1/1000.
 tBottom = 1/1000.
 chord = 10
 centroid = [0,0]
-print MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
+output = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
+expectedOutput = [2/75.,0,1/3.]
+if all(output >=  expectedOutput-np.multiply(0.05,output)) and all(output <= expectedOutput+np.multiply(0.05,output)):
+    unit = True
+else: unit = False
+if unit == False: raise IOError('unit test MomentOfInertia False')

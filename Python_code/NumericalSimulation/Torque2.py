@@ -1,4 +1,4 @@
-def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chordLength,z,sweep,l1,l2,l3,h3,cr,ct):  
+def Torque2(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chordLength,z,sweep,l1,l2,l3,h3,cr,ct):  
     sweep = -sweep * m.pi/180
     Mx = moment[0]
     Sx = shearForce[0]

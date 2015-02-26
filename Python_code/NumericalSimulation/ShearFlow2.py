@@ -1,5 +1,5 @@
 #Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
-def ShearFlow(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, tRear, tBottom, plot, sweep, stepsXY):
+def ShearFlow2(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, tRear, tBottom, plot, sweep, stepsXY):
 #Import functions needed
     import numpy as np
     import matplotlib.pyplot as plt
@@ -22,41 +22,43 @@ def ShearFlow(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, tR
 #Calculate the shear stresses qb
     #Front
     qbFront = [0]
-    for y in np.arange(0.,0.1*chordLength,dy):
+    print np.linspace(0.,0.1*chordLength,stepsXY-1)
+    for y in np.linspace(0.,0.1*chordLength,stepsXY-1):
         qb += consty * tFront * y * dy
         qbFront.append(qb)
+    print len(qbFront)
     #Top
     qbTop = [qbFront[-1]]
-    for x in np.arange(0.,-0.5*chordLength,dx):
+    for x in np.linspace(0.,-0.5*chordLength,stepsXY-1):
         qb += consty * tFront * 0.1*chordLength * dx + constx * tFront * x * dx
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
-    for y in np.arange(0.1*chordLength,0.,dy):
+    for y in np.linspace(0.1*chordLength,0.,stepsXY-1):
         qb += consty * tFront * y * dy + constx * tFront * -0.5*chordLength * dy
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
-    for x in np.arange(-0.5*chordLength, 0.,dx):
+    for x in np.linspace(-0.5*chordLength,0.,stepsXY-1):
         qb += constx * tFront * x * dx
         qbBottom.append(qb)
-    print len(qbBottom),len(qbFront)
+    #print len(qbBottom),len(qbFront)
 #Put all the values of qb in an array
     qbarray = np.zeros((4,len(qbFront)))
     qbarray[0,:] = qbFront
     qbarray[1,:] = qbTop
     qbarray[2,:] = qbRear
     qbarray[3,:] = qbBottom
-    print qbarray
+    print('#@' + str(qbarray))
 #Calculate qs0
     #Set an initial value for integration
     qbint = 0
     #Calculate int(p*qb)ds
-    for i in range(0,stepsXY):
-        qbint += 0.1*chordLength * qbTop[i] * dx
+    for i in np.arange(0,stepsXY):
+        qbint += 0.1*chordLength * qbTop[int(i)] * dx
         
-    for i in range(0,stepsXY):
-        qbint += -0.5*chordLength * qbRear[i] * dy
+    for i in np.arange(0,stepsXY):
+        qbint += -0.5*chordLength * qbRear[int(i)] * dy
     #The area I literally copied from Twan.
     A = (coordinates[0,0]-coordinates[2,0])*(coordinates[5,0]-coordinates[7,0])
 
@@ -100,4 +102,4 @@ tTop = 0.0001
 tBottom = 0.0001
 plot = True
 sweep = 180/m.pi
-print ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep)
+#print ShearFlow2(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep,stepsXY)

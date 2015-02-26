@@ -97,16 +97,16 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     momentArray[i] = moment
     
     #deteriming the shearflow and Torque for shear stress calculation
-    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr)
+    torque = Torque2(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr,ct)
     torqueArray[i] = torque
-    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep)
+    shearFlow = ShearFlow2(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep,stepsXY)
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     
     #Calculating output (shearstress and normalstress)
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
-    normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
+    normalStress = NormalStress(moment,I,chord,coordinates)
 
     #Storing outputs in 3D array
     shearStressArray[i,:,:] = shearStress
