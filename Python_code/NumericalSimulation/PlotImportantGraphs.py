@@ -36,6 +36,6 @@ def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArr
         plt.xlabel('z (m) -->')
         plt.ylabel('Normal Stress (N/m^2) -->')
         if (i==3):
-            plt.legend(loc = 4)
+            plt.legend(loc = 2)
         else: plt.legend()
     plt.figure()

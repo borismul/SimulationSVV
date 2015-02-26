@@ -1,4 +1,4 @@
-def ValidationData(normalStress,shearStress,l1,l2,stepsZ):
+def ValidationData(normalStress,shearStress,l1,l2,stepsZ,stepsXY):
     
     from ReadValidationData import ReadValidationData
     import matplotlib.pyplot as plt
@@ -20,12 +20,11 @@ def ValidationData(normalStress,shearStress,l1,l2,stepsZ):
     plt.title('Von Mises Stress vs z')
     plt.xlabel('z(m) -->')
     plt.ylabel('Von Mises Stress (N/m^2) -->')
-    
-    frontNormalStress = normalStress[:,0,1]
-    frontShearStress = shearStress[:,0,1]
-    
-    topNormalStress = normalStress[:,2,1]
-    topShearStress = shearStress[:,2,1]
+
+    frontNormalStress = normalStress[:,0,int(stepsXY/2.)]
+    frontShearStress = shearStress[:,0,int(stepsXY/2.)]
+    topNormalStress = normalStress[:,2,int(stepsXY/2.)]
+    topShearStress = shearStress[:,2,int(stepsXY/2.)]
     
     vonMissesFront = np.sqrt(np.square(frontNormalStress) + 3.*np.square(frontShearStress))
     vonMissesTop = np.sqrt(np.square(topNormalStress) + 3.*np.square(topShearStress))

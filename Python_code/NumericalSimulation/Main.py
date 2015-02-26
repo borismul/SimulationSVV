@@ -48,7 +48,7 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 3
+stepsXY = 10
 stepsZ = 1000
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
@@ -62,6 +62,7 @@ momentArray = np.zeros((stepsZ,2))
 liftArray = np.zeros((stepsZ,1))
 shearForceArray = np.zeros((stepsZ,2))
 IArray = np.zeros((stepsZ,3))
+torqueArray = np.zeros((stepsZ,1))
 
 #Looping through all cross-sections with stepsize dz
 for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
@@ -95,6 +96,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     
     #deteriming the shearflow and Torque for shear stress calculation
     torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
+    torqueArray[i] = torque
     shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep)
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
@@ -132,5 +134,5 @@ minshear = np.amin(shearStressArray, axis = 2)
 #    plt.plot(range(stepsZ),minshear[:,i],"r")
 
 #PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,plt)
-#PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,plt)
-ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ)
+PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,torqueArray,plt)
+#ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
