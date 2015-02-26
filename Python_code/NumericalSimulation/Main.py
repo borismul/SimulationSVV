@@ -112,27 +112,8 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     
     #incrementing i with 1 every loop
     i -= 1
-    
-maxshear = np.amax(shearStressArray, axis = 2)
-minshear = np.amin(shearStressArray, axis = 2)
 
-#label = str(chord)
-#plt.figure()
-#for i in range(4):
-#    if i%2 == 0:
-#        plt.subplot(221+i)
-#        plt.plot(coordinates[1,:],shearStress[i,:], label = label)
-#    else:
-#        plt.subplot(221+i)
-#        plt.plot(coordinates[4,:],shearStress[i,:], label = label)
-#plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,ncol=3, mode="expand", borderaxespad=0.)
-#
-#plt.figure()
-#for i in range(4):
-#    plt.subplot(221+i)
-#    plt.plot(range(stepsZ),maxshear[:,i],"b")
-#    plt.plot(range(stepsZ),minshear[:,i],"r")
 
-PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,plt)
-PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,torqueArray,plt)
+PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
+PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,plt)
 ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)

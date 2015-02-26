@@ -1,4 +1,4 @@
-def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,plt):
+def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt):
     import numpy as np
     
     # plotting shearforce vs z coordinate
@@ -38,3 +38,17 @@ def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArr
         if (i==3):
             plt.legend(loc = 2)
         else: plt.legend()
+
+    maxshear = np.amax(shearStressArray, axis = 2)
+    minshear = np.amin(shearStressArray, axis = 2)    
+        
+    maxShearStressTitles = ['Maximum shear stress in front web','Maximum shear stress in rear web','Maximum shear stress in top web','Maximum shear stress in bottom web']
+    plt.figure()
+    for i in range(4):
+        plt.subplot(221+i)
+        plt.plot(range(stepsZ),maxshear[:,i],"b")
+        plt.plot(range(stepsZ),minshear[:,i],"r")
+        plt.title(maxShearStressTitles[i])
+        plt.xlabel('z coordinate (m) -->')
+        plt.ylabel('maximum shear stress (N/m^2) -->')
+
