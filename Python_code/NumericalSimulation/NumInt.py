@@ -5,7 +5,7 @@ def NumInt(x,y,a,b):
     if b>x[-1] or a<x[0]: raise IOError('boundaries (a and/or b) out of range')
 #find in between which x-coordinates described in array x a and b lie  
     i=0
-    while x[i]<a: i+=1
+    while x[i]<=a: i+=1
     j=len(x)-1
     while x[j]>=b: j-=1
 #find the part of the slice in x from the left boundary to a and b
@@ -20,7 +20,7 @@ def NumInt(x,y,a,b):
 #add the rest of the slices of the function to the final answer
     count = i;
     while count<=j-1 and count>=i:
-        total += (x[count+1]-x[count])*(y[count]+y[count+1]/2)
+        total += (x[count+1]-x[count])*((y[count]+y[count+1])/2)
         count += 1 
     return total
 
