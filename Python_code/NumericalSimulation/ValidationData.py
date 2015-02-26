@@ -12,10 +12,15 @@ def ValidationData(normalStress,shearStress,l1,l2,stepsZ,stepsXY):
     valDataFront2 = ReadValidationData('front',2)
     valDataTop2 = ReadValidationData('top',2)
     
-    plt.plot(valDataFront1[:,1],valDataFront1[:,4],label = 'Front inside')
-    plt.plot(valDataFront2[:,1],valDataFront2[:,4],label = 'Front outside')
-    plt.plot(valDataTop1[:,1],valDataTop1[:,4],label = 'Top inside')
-    plt.plot(valDataTop2[:,1],valDataTop2[:,4],label = 'Top outside')
+    valDataFront = np.multiply(valDataFront1 + valDataFront2,1/2.)
+    valDataTop = np.multiply(valDataTop1 + valDataTop2,1/2.)
+    print valDataFront
+#    plt.plot(valDataFront1[:,1],valDataFront1[:,4],label = 'Front inside')
+#    plt.plot(valDataFront2[:,1],valDataFront2[:,4],label = 'Front outside')
+#    plt.plot(valDataTop1[:,1],valDataTop1[:,4],label = 'Top inside')
+#    plt.plot(valDataTop2[:,1],valDataTop2[:,4],label = 'Top outside')
+    plt.plot(valDataFront[:,1],valDataFront[:,4],label = 'Front avarage')
+    plt.plot(valDataTop[:,1],valDataTop[:,4],label = 'Top avarage')
 
     plt.title('Von Mises Stress vs z')
     plt.xlabel('z(m) -->')

@@ -48,8 +48,8 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 10
-stepsZ = 1000
+stepsXY = 11
+stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]

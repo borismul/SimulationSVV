@@ -61,8 +61,8 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
     qBottom = qbBottom+qs0
     qarray = np.zeros((4,len(qFront)))
     qarray[0,:] = qFront
-    qarray[1,:] = qTop
-    qarray[2,:] = qRear
+    qarray[2,:] = qTop
+    qarray[1,:] = qRear
     qarray[3,:] = qBottom
     
     return qarray

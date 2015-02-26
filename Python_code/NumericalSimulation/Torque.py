@@ -1,10 +1,10 @@
 def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chordLength,z,sweep,l1,l2,l3,h3):  
-    sweep = sweep * m.pi/180
+    sweep = -sweep * m.pi/180
     Mx = moment[0]
     Sy = shearForce[1]
     Sx = shearForce[0]
     if (z>l3 and z<l1+l2):
-        wl = Mx/Sy
+        wl = Mx/lift
         xl = wl * m.atan(sweep)
         Torque = lift*(coordinates[0,0]-xl)
         return Torque
@@ -17,15 +17,15 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         return Torque
     elif (z >= 0 and z <= l1):
         ww = l3-z
-        wl = (Mx/Sy+engineWeight/Sy*ww)/(1+engineWeight/Sy)
+        wl = (Mx+engineWeight*ww)/lift#(Mx/Sy+engineWeight/Sy*ww)/(1+engineWeight/Sy)
         xl = (wl-(l1-z)) * m.atan(sweep)
         xw = (ww-(l1-z)) * m.atan(sweep)
         Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*centroid[0] + Sx*h3
-
-        #print Torque        
         return Torque
     else:
         return 0
 
 #unit test
 import math as m
+import matplotlib.pyplot as plt
+import numpy as np

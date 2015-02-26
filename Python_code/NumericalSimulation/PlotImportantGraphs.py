@@ -51,3 +51,4 @@ def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArr
         plt.title(maxShearStressTitles[i])
         plt.xlabel('z coordinate (m) -->')
         plt.ylabel('maximum shear stress (N/m^2) -->')
+
