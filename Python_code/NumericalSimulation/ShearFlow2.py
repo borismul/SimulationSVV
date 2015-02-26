@@ -22,11 +22,11 @@ def ShearFlow2(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, t
 #Calculate the shear stresses qb
     #Front
     qbFront = [0]
-    print np.linspace(0.,0.1*chordLength,stepsXY-1)
+    #print np.linspace(0.,0.1*chordLength,stepsXY-1)
     for y in np.linspace(0.,0.1*chordLength,stepsXY-1):
         qb += consty * tFront * y * dy
         qbFront.append(qb)
-    print len(qbFront)
+    #print len(qbFront)
     #Top
     qbTop = [qbFront[-1]]
     for x in np.linspace(0.,-0.5*chordLength,stepsXY-1):
@@ -49,7 +49,7 @@ def ShearFlow2(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, t
     qbarray[1,:] = qbTop
     qbarray[2,:] = qbRear
     qbarray[3,:] = qbBottom
-    print('#@' + str(qbarray))
+    #print('#@' + str(qbarray))
 #Calculate qs0
     #Set an initial value for integration
     qbint = 0

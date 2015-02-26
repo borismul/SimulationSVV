@@ -26,16 +26,13 @@ def XYCoordinates(chord,stepsXY,centroid):
     return returnArray
 
 #Unit Test
-chord = 1
-stepsXY = 3
-centroid = [0.,0.]
-output = XYCoordinates(chord,stepsXY,centroid)
-expectedOutput = [[0.25, 0.25, 0.25], [-0.05, 0., 0.05], [-0.25, -0.25, -0.25], [-0.05, 0., 0.05], [-0.25, 0., 0.25], [0.05, 0.05, 0.05], [-0.25, 0., 0.25], [-0.05, -0.05, -0.05]]
-if all(output == expectedOutput):
-    unit = True
-else: unit = False
-
-if unit == False: raise IOError('unit test XYcoordinates False')
-#for i in range(4):
-#    print i
-#    plt.plot(xy[2*i,:],xy[2*i+1,:])
+#chord = 1
+#stepsXY = 3
+#centroid = [0.,0.]
+#output = XYCoordinates(chord,stepsXY,centroid)
+#expectedOutput = [[0.25, 0.25, 0.25], [-0.05, 0., 0.05], [-0.25, -0.25, -0.25], [-0.05, 0., 0.05], [-0.25, 0., 0.25], [0.05, 0.05, 0.05], [-0.25, 0., 0.25], [-0.05, -0.05, -0.05]]
+#if all(output == expectedOutput):
+#    unit = True
+#else: unit = False
+#
+#if unit == False: raise IOError('unit test XYcoordinates False')

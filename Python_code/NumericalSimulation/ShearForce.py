@@ -11,6 +11,7 @@ def ShearForce(lift, engineWeight, T, fuelWeight):
     S_x =  T
     return [S_x, S_y]
 
+#unit test
 lift = 4
 engineWeight = 3
 fuelWeight = 2

@@ -16,7 +16,6 @@ from MomentOfInertia import MomentOfInertia
 from NormalStress import NormalStress
 from PlotImportantGraphs import PlotImportantGraphs
 from PlotUnitTests import PlotUnitTests
-from ShearCenter import ShearCenter
 from ShearStress import ShearStress
 from ShearFlow import ShearFlow
 from ShearFlow2 import ShearFlow2
@@ -25,6 +24,7 @@ from Torque import Torque
 from Torque2 import Torque2
 from XYCoordinates import XYCoordinates
 from FuelWeight import FuelWeight
+from EngineThrust import EngineThrust
 from ValidationData import ValidationData
 
 
@@ -109,17 +109,17 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     
     #Calculating output (shearstress and normalstress)
-    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom,c)
+    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom,chord)
     normalStress = NormalStress(moment,I,chord,coordinates)
 
     #Storing outputs in 3D array
-    shearStressArray[i,:,:] = shearStress
+    shearStressArray[i,:,:] = shearStress.T
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i -= 1
 
 
-PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
-PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
+#PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
+#PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
 ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
