@@ -23,22 +23,22 @@ def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, s
     #Front
     qbFront = [0]
     for y in np.arange(0.,0.1*chord,dy):
-        qb += consty * tFront * y * dy + constx * tFront * 0. * dy
+        qb += consty * tFront * y * dy
         qbFront.append(qb)
     #Top
     qbTop = [qbFront[-1]]
     for x in np.arange(0.,-0.5*chord,dx):
-        qb += consty * tFront * ypos * dx + constx * tFront * x * dx
+        qb += consty * tFront * 0.1*chord * dx + constx * tFront * x * dx
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
     for y in np.arange(0.1*chord,0.,dy):
-        qb += consty * tFront * y * dy + constx * tFront * xneg * dy
+        qb += consty * tFront * y * dy + constx * tFront * -0.5*chord * dy
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
     for x in np.arange(-0.5*chord, 0.,dx):
-        qb += consty * tFront * yneg * dx + constx * tFront * x * dx
+        qb += constx * tFront * x * dx
         qbBottom.append(qb)
     print len(qbBottom),len(qbFront)
 #Put all the values of qb in an array
