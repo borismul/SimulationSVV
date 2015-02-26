@@ -63,6 +63,7 @@ liftArray = np.zeros((stepsZ,1))
 shearForceArray = np.zeros((stepsZ,2))
 IArray = np.zeros((stepsZ,3))
 torqueArray = np.zeros((stepsZ,1))
+ys = np.zeros((stepsZ,8,stepsXY))
 
 #Looping through all cross-sections with stepsize dz
 for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
@@ -71,7 +72,8 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     chord = ChordLength(cr,ct,l1,l2,z)
     centroid = Centroid(tFront,tRear,tTop,tBottom,chord)
     coordinates = XYCoordinates(chord,stepsXY,centroid)
-    
+    ys[i,:,:]=coordinates
+
     #Determining moment of inertia for shear and normal stress and storing it in array
     I = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
     IArray[i]= I
@@ -115,5 +117,5 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 
 
 PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
-PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,plt)
+PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
 ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
