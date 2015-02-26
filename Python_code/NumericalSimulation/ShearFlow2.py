@@ -25,31 +25,33 @@ def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, s
     dy = coordinates[1,1]- coordinates[1,0]
 #Calculate the shear stresses qb
     #Front
-    qbFront1 = []
+    qbFront = []
     for y in np.arange(yneg,ypos,dy):
-        qb += consty * tFront * y * dy + constx * tFront * x * dy
+        qb += consty * tFront * y * dy + constx * tFront * xpos * dy
         qbFront.append(qb)
     #Top
-    qbTop1 = [qbFront[-1]]
-    for x in np.arange(xneg,xpos,dx):
-        qb += consty * tFront * y * dx + constx * tFront * x * dx
+    qbTop = [qbFront[-1]]
+    for x in np.arange(xpos,xneg,dx):
+        qb += consty * tFront * ypos * dx + constx * tFront * x * dx
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
     for y in np.arange(ypos,yneg,dy):
-        qb += consty * tFront * y * dy + constx * tFront * x * dy
+        qb += consty * tFront * y * dy + constx * tFront * xneg * dy
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
     for x in np.arange(xneg, xpos,dx):
-        qb += consty * tFront * y * dx + constx * tFront * x * dx
+        qb += consty * tFront * yneg * dx + constx * tFront * x * dx
         qbBottom.append(qb)
+    print len(qbBottom),len(qbFront)
 #Put all the values of qb in an array
     qbarray = np.zeros((4,len(qbFront)))
-    qbarray[0,:] = qbFront1
+    qbarray[0,:] = qbFront
     qbarray[1,:] = qbTop
     qbarray[2,:] = qbRear
     qbarray[3,:] = qbBottom
+    print qbarray
 ###Calculate qs0
 ##    #Set an initial value for integration
 ##    qbint = 0
@@ -71,7 +73,7 @@ def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, s
 ##    qarray[1,:] = qRear
 ##    qarray[3,:] = qBottom
 ##    
-##    return qarray
+    return qbarray
 ###    for y in coordinates[:,1]:
 ###        qb +=  * tFront*y*dy  * tFront*y*dy
 ###        List.append(qb)
@@ -84,26 +86,20 @@ def ShearFlow(chord, S, T, I, coordinates, tFront, tTop, tRear, tBottom, plot, s
 ###    for x in coordinates[:,4]:
 ###        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tBottom*coordinates[0,6]*dx -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*x*dx
 ###        List.append(qb)
-##
-###unit test
-###from XYCoordinates import XYCoordinates
-###import numpy as np
-###from NumInt import NumInt
-###from ChordLength import ChordLength
-###import matplotlib.pyplot as plt
-###cr = 2
-###ct = 1
-###l1 = 5
-###l2 = 10
-###d = 1
-###shearForce = [15.,1.5]
-###I = [1.,0.,1.]
-###stepsXY = 100
-###centroid = [0.,0.]
-###tFront = 0.001
-###tRear = 0.001
-###tTop = 0.001
-###tBottom = 0.001
-###for z in np.arange(0,l1+l2+d,d):
-###    chord = ChordLength(cr,ct,l1,l2,z)
-###    shearflow = ShearFlow(chord, shearForce,0,I,stepsXY,centroid,tFront,tTop, tRear, tBottom,True)
+#unit test
+import math as m
+from XYCoordinates import XYCoordinates
+chordLength = 1.
+shearForce = [1.,0.]
+torque = 1.
+I = [1.,0.,1.]
+stepsXY = 10.
+centroid = [0.,0.]
+coordinates = XYCoordinates(chordLength,stepsXY,centroid)
+tFront = 0.0001
+tRear = 0.0001
+tTop = 0.0001
+tBottom = 0.0001
+plot = True
+sweep = 180/m.pi
+print ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep)
