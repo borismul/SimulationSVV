@@ -40,7 +40,7 @@ l3 = 9.7 #(m)
 h3 = 2.14 #(m)
 me = 5765 #(kg)
 tFront = 0.005 #(-)
-tRear = 0.003 #(-)5
+tRear = 0.003 #(-)
 tTop = 0.002 #(-)
 tBottom = 0.002 #(-)
 g = 9.81 #(m/s^2)
@@ -82,14 +82,16 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     liftArray[i] = lift
     
-    #determining engineWeight for shear force
+    #determining engineWeight and thrust for shear force
     engineWeight = EngineWeight(me,g,z,l3)
+    engineThrust = EngineThrust(T,z,l3)    
     
-    #determining engineWeight for shear force
+    #determining fuelWeight for shear force
     fuelWeight = FuelWeight(l1,z,fuelLiters,fuelDensity,g)
     
+    
     #determining shearForce for moment distribution and shearflow, storing in array
-    shearForce = ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight)
+    shearForce = ShearForce(lift, engineWeight, engineThrust, fuelWeight)
     shearForceArray[i] = shearForce
     
     #determining moment in the wingbox to be able to calculate the normal stresses and storing in array
@@ -105,7 +107,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     
     #Calculating output (shearstress and normalstress)
-    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom,c)
     normalStress = NormalStress(moment,I,chord,coordinates)
 
     #Storing outputs in 3D array

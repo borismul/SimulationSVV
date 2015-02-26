@@ -22,4 +22,11 @@ centroid = [0.,0.]
 coordinates = XYCoordinates(c,stepsXY,centroid)
 moment = [1.,0.]
 I = [1.,0.,1.]
-#print NormalStress(moment,I,c,coordinates)
+output =  NormalStress(moment,I,c,coordinates)
+expectedOutput = np.zeros((4,stepsXY))
+for i in range(4):
+    expectedOutput[i,:] = coordinates[2*i+1,:]
+if all(abs(output) >=  abs(expectedOutput-np.multiply(0.05,output))) and all(abs(output) <= abs(expectedOutput+np.multiply(0.05,output))):
+    unit = True
+else: unit = False
+if unit == False: raise IOError('unit test MomentOfInertia False')

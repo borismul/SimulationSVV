@@ -1,17 +1,24 @@
-def ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight):
-#These are all SI units
-    if (z >= 0 and z <= l1):
-        # in this length all the shear forces act
-        S_y = lift - engineWeight - fuelWeight
-        S_x =  T
-    elif (z >= l1 and z <= l3):
-        #Only the engine + lift
-        S_y = lift - engineWeight
-        S_x =  T
-    elif (z >= l3 and z <= (l1+l2)):
-        #Just the lift
-        S_y = lift
-        S_x = 0
-    else: raise IOError('z outside wing')
-    return S_x, S_y
-#it returns a reference error if z is outside the range of the wingspan.
+'''
+This program calculates the total shearforce acting on a cross section of the wing box at an arbitrary point of z.
+
+Input variables: Shearforces due to the lift, engine Weight, Thrust and Fuelweight
+Output variables: Shear forces in x and y
+Output format: [float,float]
+'''
+def ShearForce(lift, engineWeight, T, fuelWeight):
+#Add up all the forces that create the shear force (and give them a direction + or - in x or y)
+    S_y = lift - engineWeight - fuelWeight
+    S_x =  T
+    return [S_x, S_y]
+
+lift = 4
+engineWeight = 3
+fuelWeight = 2
+T = 1
+output = ShearForce(lift, engineWeight, T, fuelWeight)
+expectedOutput = [1,-1] # sum of the forces in their respective directions
+if output == expectedOutput:
+    unit = True
+else: unit = False
+
+if unit == False: raise IOError('unit test ShearForce False')
