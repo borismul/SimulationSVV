@@ -42,14 +42,14 @@ tRear = 0.003 #(-)5
 tTop = 0.002 #(-)
 tBottom = 0.002 #(-)
 g = 9.81 #(m/s^2)
-liftDist = 193*10**3*g/2 #(N)
+liftDist = 193*10**3*g #(N)
 T = 64*10**3 #(N)
 fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 11
-stepsZ = 100
+stepsXY = 10
+stepsZ = 10
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -95,7 +95,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     momentArray[i] = moment
     
     #deteriming the shearflow and Torque for shear stress calculation
-    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3)
+    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr)
     torqueArray[i] = torque
     shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep)
     
@@ -106,7 +106,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,stepsXY,centroid)
 
-    #Storing outputs in 4D/3D array
+    #Storing outputs in 3D array
     shearStressArray[i,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     

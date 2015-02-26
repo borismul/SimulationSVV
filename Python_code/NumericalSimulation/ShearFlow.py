@@ -23,21 +23,26 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
     for i in range(1,len(coordinates[1,:])):
         qb += consty * NumInt(coordinates[1,:],tFront*coordinates[1,:],coordinates[1,i-1],coordinates[1,i]) + constx * NumInt(coordinates[1,:],tFront*coordinates[0,:],coordinates[1,i-1],coordinates[1,i])
         qbFront.append(qb)
+    print qbFront
     #Top
     qbTop = [qbFront[-1]]
     for i in range(1,len(coordinates[4,:])):
         qb += consty * NumInt(coordinates[4,:],tTop*coordinates[5,:],coordinates[4,i-1],coordinates[4,i]) + constx * NumInt(coordinates[4,:],tTop*coordinates[4,:],coordinates[4,i-1],coordinates[4,i])
         qbTop.append(qb)
+    print qbTop
     #Rear
     qbRear = [qbTop[-1]]
     for i in range(1,len(coordinates[3,:])):
         qb += consty * NumInt(coordinates[3,:],tRear*coordinates[3,:],coordinates[3,i-1],coordinates[3,i]) + constx * NumInt(coordinates[3,:],tRear*coordinates[2,:],coordinates[3,i-1],coordinates[3,i])
         qbRear.append(qb)
+    print qbRear
     #Bottom
     qbBottom = [qbRear[-1]]
     for i in range(1,len(coordinates[6,:])):
         qb += consty * NumInt(coordinates[6,:],tBottom*coordinates[7,:],coordinates[6,i-1],coordinates[6,i]) + constx * NumInt(coordinates[6,:],tBottom*coordinates[6,:],coordinates[6,i-1],coordinates[6,i])
         qbBottom.append(qb)
+    print qbBottom
+    print 
 #Put all the values of qb in an array
     qbarray = np.zeros((4,len(qbFront)))
     qbarray[0,:] = qbFront
@@ -101,3 +106,19 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
 #for z in np.arange(0,l1+l2+d,d):
 #    chord = ChordLength(cr,ct,l1,l2,z)
 #    shearflow = ShearFlow(chord, shearForce,0,I,stepsXY,centroid,tFront,tTop, tRear, tBottom,True)
+import math as m
+from XYCoordinates import XYCoordinates
+chordLength = 1.
+shearForce = [1.,0.]
+torque = 1.
+I = [1.,0.,1.]
+stepsXY = 10.
+centroid = [0.,0.]
+coordinates = XYCoordinates(chordLength,stepsXY,centroid)
+tFront = 0.0001
+tRear = 0.0001
+tTop = 0.0001
+tBottom = 0.0001
+plot = True
+sweep = 180/m.pi
+print ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep)

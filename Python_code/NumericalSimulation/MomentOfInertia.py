@@ -55,4 +55,4 @@ tTop = 1/1000.
 tBottom = 1/1000.
 chord = 10
 centroid = [0,0]
-#print MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
+print MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
