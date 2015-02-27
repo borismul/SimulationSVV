@@ -16,10 +16,12 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         return Torque
     elif (z >= 0 and z <= l1):
         ww = l3-z
-        wl = (Mx+engineWeight*ww)/lift#(Mx/Sy+engineWeight/Sy*ww)/(1+engineWeight/Sy)
-        xl = (wl-(l1-z)) * m.tan(sweep) + cr*0.25-chordLength*0.25
-        xw = (ww-(l1-z)) * m.tan(sweep) + cr*0.25-chordLength*0.25
-        Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*centroid[0] + Sx*h3
+        wf = l1-z
+        wl = (Mx+engineWeight*ww+fuelWeight*wf)/lift
+        xl = (wl-wf) * m.tan(sweep) + cr*0.25-chordLength*0.25
+        xw = (ww-wf) * m.tan(sweep) + cr*0.25-chordLength*0.25
+        xf = centroid[0]
+        Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*xf + Sx*h3        
         return Torque
     else:
         return 0

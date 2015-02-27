@@ -1,10 +1,8 @@
 #Function to calculate the shear flow in a crossection. (section is cut at x = 0.25c, y = 0c)
-def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep):
+def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom, sweep):
 #Import functions needed
     from NumInt import NumInt
     import numpy as np
-    import matplotlib.pyplot as plt
-    import math as m
 #Extract Moments of Inertia
     Ixx = I[0]
     Ixy = I[1]
@@ -67,18 +65,6 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
     qarray[3,:] = qBottom
     
     return qarray
-#    for y in coordinates[:,1]:
-#        qb +=  * tFront*y*dy  * tFront*y*dy
-#        List.append(qb)
-#    for y in coordinates[:,3]:
-#        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tRear*y*dy -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tRear*coordinates[0,2]*dx
-#        List.append(qb)
-#    for x in coordinates[:,4]:
-#        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*coordinates[0,4]*dx -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*x*dx
-#        List.append(qb)
-#    for x in coordinates[:,4]:
-#        qb += -(Sx*Ixx - Sy*Ixy)/(Ixx*Iyy - Ixy^2) * tBottom*coordinates[0,6]*dx -(Sy*Iyy - Sx*Ixy)/(Ixx*Iyy - Ixy^2) * tTop*x*dx
-#        List.append(qb)
 
 #unit test
 #from XYCoordinates import XYCoordinates
@@ -117,4 +103,4 @@ tTop = 0.0001
 tBottom = 0.0001
 plot = True
 sweep = 180/m.pi
-print ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep)
+print ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom, sweep)

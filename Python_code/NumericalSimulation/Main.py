@@ -51,8 +51,8 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 10
-stepsZ = 10
+stepsXY = 100
+stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -102,12 +102,12 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     momentArray[i] = moment
     
     #determining shear centre
-    ShearCentre = Shearcentre(chordLength, I, tFront, tRear, tBottom, tTop, stepsXY)
+    ShearCentre = Shearcentre(chord, I, tFront, tRear, tBottom, tTop, stepsXY)
     
     #deteriming the shearflow and Torque for shear stress calculation
-    torque = Torque2(lift,engineWeight,fuelWeight,shearForce, moment, ShearCentre,chord,z,sweep,l1,l2,l3,h3,cr,ct)
+    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr)  
     torqueArray[i] = torque
-    shearFlow = ShearFlow2(chord, shearForce, torque, I, ShearCentre,tFront,tTop,tRear,tBottom,stepsXY)
+    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom, sweep)
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    

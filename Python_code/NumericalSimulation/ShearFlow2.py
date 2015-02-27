@@ -29,18 +29,18 @@ def ShearFlow2(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, t
     #print len(qbFront)
     #Top
     qbTop = [qbFront[-1]]
-    for x in np.linspace(0.,-0.5*chordLength,stepsXY-1):
-        qb += consty * tFront * 0.1*chordLength * dx + constx * tFront * x * dx
+    for x in np.linspace(0.,0.5*chordLength,stepsXY-1):
+        qb += consty * tFront * 0.1*chordLength * dx + constx * tFront * -x * dx
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
-    for y in np.linspace(0.1*chordLength,0.,stepsXY-1):
-        qb += consty * tFront * y * dy + constx * tFront * -0.5*chordLength * dy
+    for y in np.linspace(0.,0.1*chordLength,stepsXY-1):
+        qb += consty * tFront * (0.1*chordLength-y) * dy + constx * tFront * -0.5*chordLength * dy
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
-    for x in np.linspace(-0.5*chordLength,0.,stepsXY-1):
-        qb += constx * tFront * x * dx
+    for x in np.linspace(0., 0.5*chordLength,stepsXY-1):
+        qb += constx * tFront * (x-0.5*chordLength) * dx
         qbBottom.append(qb)
     #print len(qbBottom),len(qbFront)
 #Put all the values of qb in an array
@@ -73,7 +73,7 @@ def ShearFlow2(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, t
     qarray[2,:] = qTop
     qarray[1,:] = qRear
     qarray[3,:] = qBottom
-    return qarray
+    return qbarray
 ###    for y in coordinates[:,1]:
 ###        qb +=  * tFront*y*dy  * tFront*y*dy
 ###        List.append(qb)
