@@ -6,6 +6,7 @@ Output variables: Normal stress along each web and spar.
 Output format: [[stepsXY*float],[stepsXY*float],[stepsXY*float],[stepsXY*float]]
 '''
 def NormalStress(moment,I,c,coordinates):
+    import numpy as np
     #make an empty array for the data
     sigma = np.zeros((4,len(coordinates[0,:])))
     for i in range(4):
@@ -14,12 +15,19 @@ def NormalStress(moment,I,c,coordinates):
     return sigma
     
 #unit test
-import numpy as np
-from XYCoordinates import XYCoordinates
-c = 1.
-stepsXY = 10.
-centroid = [0.,0.]
-coordinates = XYCoordinates(c,stepsXY,centroid)
-moment = [1.,0.]
-I = [1.,0.,1.]
-#print NormalStress(moment,I,c,coordinates)
+#import numpy as np
+#from XYCoordinates import XYCoordinates
+#c = 1.
+#stepsXY = 10.
+#centroid = [0.,0.]
+#coordinates = XYCoordinates(c,stepsXY,centroid)
+#moment = [1.,0.]
+#I = [1.,0.,1.]
+#output =  NormalStress(moment,I,c,coordinates)
+#expectedOutput = np.zeros((4,stepsXY))
+#for i in range(4):
+#    expectedOutput[i,:] = coordinates[2*i+1,:]
+#if all(abs(output) >=  abs(expectedOutput-np.multiply(0.05,output))) and all(abs(output) <= abs(expectedOutput+np.multiply(0.05,output))):
+#    unit = True
+#else: unit = False
+#if unit == False: raise IOError('unit test MomentOfInertia False')

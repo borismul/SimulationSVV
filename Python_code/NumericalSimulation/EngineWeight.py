@@ -11,7 +11,6 @@ def EngineWeight(mEngine,g,z,l3):
         engineWeight = mEngine*g
         return engineWeight
     else:
-        IOError("z is outside the range")
         return 0
 
 #unit test

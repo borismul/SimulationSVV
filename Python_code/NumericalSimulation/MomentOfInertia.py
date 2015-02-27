@@ -56,7 +56,8 @@ tBottom = 1/1000.
 chord = 10
 centroid = [0,0]
 output = MomentOfInertia(tFront,tRear,tTop,tBottom,chord,centroid)
-expectedOutput = [2/75.,0,1/3.]
+expectedOutput = [2/75.,0,1/3.] #Calculating the result assuming thinwalled webs/spars (so no thickness in the arm and no t^3)
+
 if all(output >=  expectedOutput-np.multiply(0.05,output)) and all(output <= expectedOutput+np.multiply(0.05,output)):
     unit = True
 else: unit = False
