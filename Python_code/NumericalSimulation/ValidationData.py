@@ -1,3 +1,4 @@
+#plot the validation data and calculated data in one graph
 def ValidationData(normalStress,shearStress,l1,l2,stepsZ,stepsXY):
     
     from ReadValidationData import ReadValidationData

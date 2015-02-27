@@ -1,3 +1,4 @@
+#plots the graphs with the most important output data
 def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt):
     import numpy as np
     

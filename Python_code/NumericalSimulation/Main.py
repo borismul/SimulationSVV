@@ -73,6 +73,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     #Determining chord length, centroid and section ditribution at current cross-Section
     chord = ChordLength(cr,ct,l1,l2,z)
     centroid = Centroid(tFront,tRear,tTop,tBottom,chord)
+    #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows 
     coordinates = XYCoordinates(chord,stepsXY,centroid)
     ys[i,:,:]=coordinates
 
@@ -103,10 +104,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     #deteriming the shearflow and Torque for shear stress calculation
     torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr)  
     torqueArray[i] = torque
-    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom)
-    
-    #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
-    coordinates = XYCoordinates(chord,stepsXY,centroid)    
+    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom) 
     
     #Calculating output (shearstress and normalstress)
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom,chord)

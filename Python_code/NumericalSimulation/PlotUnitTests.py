@@ -1,3 +1,4 @@
+#plot the graphs that are only relevant for checking if the values make sense.
 def PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torque,ys,plt):
     import numpy as np
     
