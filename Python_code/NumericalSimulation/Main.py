@@ -16,7 +16,6 @@ from MomentOfInertia import MomentOfInertia
 from NormalStress import NormalStress
 from PlotImportantGraphs import PlotImportantGraphs
 from PlotUnitTests import PlotUnitTests
-from Shearcentre import Shearcentre
 from ShearStress import ShearStress
 from ShearFlow import ShearFlow
 from ShearForce import ShearForce
@@ -99,13 +98,10 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     moment = Moment(shearForce,moment,dz)
     momentArray[i] = moment
     
-    #determining shear centre
-    ShearCentre = Shearcentre(chord, I, tFront, tRear, tBottom, tTop, stepsXY)
-    
     #deteriming the shearflow and Torque for shear stress calculation
     torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr)  
     torqueArray[i] = torque
-    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom, sweep)
+    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom)
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    

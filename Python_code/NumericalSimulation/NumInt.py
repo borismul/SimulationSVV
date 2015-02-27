@@ -1,4 +1,10 @@
-#Numerical integration of a function described by arrays x and y between x-coordinates a and b
+'''
+This program does numerical integration of a function described by arrays x and y between x-coordinates a and b
+
+Input variables: x and y array of the function, begin and end x
+Output variables: integral of the function y along x between a and b
+Output format: float
+'''
 def NumInt(x,y,a,b):
     total = 0
 #check if inputted boundries a & b are within the function defined by x & y
@@ -29,4 +35,4 @@ x = range(0,10)
 y = [1,1,1,1,1,1,1,1,1,1]
 a = 0
 b = 9
-if NumInt(x,y,a,b) != b-a: raise IOError('answer not valid')
+if NumInt(x,y,a,b) != b-a: raise IOError('unit test NumInt False')

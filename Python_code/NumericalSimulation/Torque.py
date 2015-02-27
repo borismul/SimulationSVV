@@ -1,3 +1,10 @@
+'''
+This program calculates the torque on a cross section of the wing box at an arbitrary point of z.
+
+Input variables: shearforces due to lift, engine weight and fuelweight, total shearforce, moment, the axis system along the webs and spars of the wingbox wrt the centroid, centroid, local chord, local z, sweep angle, lengths in spanwise direction,height of the engine wrt the centroid,root chord
+Output variables: torque
+Output format: float
+'''
 def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chordLength,z,sweep,l1,l2,l3,h3,cr):  
     sweep = -sweep * m.pi/180
     Mx = moment[0]
@@ -21,10 +28,10 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         xl = (wl-wf) * m.tan(sweep) + cr*0.25-chordLength*0.25
         xw = (ww-wf) * m.tan(sweep) + cr*0.25-chordLength*0.25
         xf = centroid[0]
-        Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*xf + Sx*h3        
+        Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*xf + Sx*h3 
         return Torque
     else:
-        return 0
+        return 0.
 
 #unit test
 import math as m

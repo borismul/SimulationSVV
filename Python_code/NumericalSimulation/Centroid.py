@@ -1,8 +1,8 @@
 '''
-This program calculates the centroid of the wingbox at one spanwise location.
+This program calculates the centroid of the wingbox at an arbitrary z location.
 
 Input variables: thicknesses of the wingbox webs and spars, local chord
-Output variables: x and y coordinates of the centroid as
+Output variables: x and y coordinates of the centroid
 Output format: [float,float]
 '''
 def Centroid(tFront,tRear,tTop,tBottom,c):
