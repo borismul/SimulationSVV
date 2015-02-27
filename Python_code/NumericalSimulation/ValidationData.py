@@ -14,7 +14,7 @@ def ValidationData(normalStress,shearStress,l1,l2,stepsZ,stepsXY):
     
     valDataFront = np.multiply(valDataFront1 + valDataFront2,1/2.)
     valDataTop = np.multiply(valDataTop1 + valDataTop2,1/2.)
-    print valDataFront
+    #print valDataFront
 #    plt.plot(valDataFront1[:,1],valDataFront1[:,4],label = 'Front inside')
 #    plt.plot(valDataFront2[:,1],valDataFront2[:,4],label = 'Front outside')
 #    plt.plot(valDataTop1[:,1],valDataTop1[:,4],label = 'Top inside')

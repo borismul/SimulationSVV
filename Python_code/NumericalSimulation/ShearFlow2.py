@@ -2,8 +2,6 @@
 def ShearFlow2(chordLength, ShearForce, Torque2, I, coordinates, tFront, tTop, tRear, tBottom, plot, sweep, stepsXY):
 #Import functions needed
     import numpy as np
-    import matplotlib.pyplot as plt
-    import math as m
 #Extract Moments of Inertia
     Ixx = I[0]
     Ixy = I[1]

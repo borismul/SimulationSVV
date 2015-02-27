@@ -37,9 +37,7 @@ for z in x[::-1]:
     c=ChordLength(cr,ct,l1,l2,z)
     lift = Lift(z,liftDist,l1,l2,cr,ct,c,lift,dz)
     liftarray[i] = lift
-    #print z
     i -= 1
-#print liftarray,x
 plt.plot(x,liftarray)
 plt.show()
 

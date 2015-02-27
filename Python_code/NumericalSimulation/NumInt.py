@@ -25,9 +25,8 @@ def NumInt(x,y,a,b):
     return total
 
 #test module
-#x = range(0,10)
-#y = [1,1,1,1,1,1,1,1,1,1]
-#a = 0
-#b = 9
-#if NumInt(x,y,a,b) != b-a: raise IOError('answer not valid')
-#else: print('succes')
+x = range(0,10)
+y = [1,1,1,1,1,1,1,1,1,1]
+a = 0
+b = 9
+if NumInt(x,y,a,b) != b-a: raise IOError('answer not valid')
