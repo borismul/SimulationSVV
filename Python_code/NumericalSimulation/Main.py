@@ -107,7 +107,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     #deteriming the shearflow and Torque for shear stress calculation
     torque = Torque2(lift,engineWeight,fuelWeight,shearForce, moment, ShearCentre,chord,z,sweep,l1,l2,l3,h3,cr,ct)
     torqueArray[i] = torque
-    shearFlow = ShearFlow2(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep,stepsXY)
+    shearFlow = ShearFlow2(chord, shearForce, torque, I, ShearCentre,tFront,tTop,tRear,tBottom,stepsXY)
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
