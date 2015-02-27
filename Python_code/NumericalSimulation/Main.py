@@ -24,6 +24,7 @@ from XYCoordinates import XYCoordinates
 from FuelWeight import FuelWeight
 from EngineThrust import EngineThrust
 from ValidationData import ValidationData
+from PlotVerificationData import PlotVerificationData
 
 
 plt.close("all")
@@ -48,7 +49,8 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 100
+stepsXY = 101
+13
 stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
@@ -121,3 +123,5 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 #PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
 #PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
 ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
+PlotVerificationData(normalStressArray,shearStressArray,stepsXY)
+plt.figure()

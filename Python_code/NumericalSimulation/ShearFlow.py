@@ -90,3 +90,4 @@ if output[-1,-1] == output[0,0]:
     unit = True
 else: unit = False
 if unit == False: print'unit test ShearFlow False'
+
