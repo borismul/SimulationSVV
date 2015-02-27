@@ -1,14 +1,26 @@
-def PlotVerificationData(normalStressArray,shearStressArray,stepsXY):
+def PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2):
     import matplotlib.pyplot as plt
-    
+    import numpy as np
     plt.figure()
     plt.subplot(121)
-    plt.plot(range(len(normalStressArray[:,2,int(stepsXY/2.)])),normalStressArray[:,2,int(stepsXY/2.)])
+    plt.title('Top spar normal Stress')
+    plt.xlabel('z location (m) -->')
+    plt.ylabel('normal stress (N/m^2) -->')
+    plt.plot(np.multiply(range(len(normalStressArray[:,2,int(stepsXY/2.)])),(l1+l2)/len(normalStressArray[:,2,int(stepsXY/2.)])),normalStressArray[:,2,int(stepsXY/2.)])
     plt.subplot(122)
-    plt.plot(range(len(normalStressArray[:,0,int(stepsXY/2.)])),normalStressArray[:,0,int(stepsXY/2.)])
+    plt.plot(np.multiply(range(len(normalStressArray[:,0,int(stepsXY/2.)])),(l1+l2)/len(normalStressArray[:,0,int(stepsXY/2.)])),normalStressArray[:,0,int(stepsXY/2.)])
+    plt.title('Front spar normal Stress')
+    plt.xlabel('z location (m) -->')
+    plt.ylabel('normal stress (N/m^2) -->')
     
-    plt.figure()
+#    plt.figure()
     plt.subplot(121)
-    plt.plot(range(len(shearStressArray[:,2,int(stepsXY/2.)])),shearStressArray[:,2,int(stepsXY/2.)])
+    plt.title('Top spar shear Stress')
+    plt.xlabel('z location (m) -->')
+    plt.ylabel('shear stress (N/m^2) -->')
+    plt.plot(np.multiply(range(len(shearStressArray[:,2,int(stepsXY/2.)])),(l1+l2)/len(shearStressArray[:,2,int(stepsXY/2.)])),-shearStressArray[:,2,int(stepsXY/2.)])
     plt.subplot(122)
-    plt.plot(range(len(shearStressArray[:,0,int(stepsXY/2.)])),shearStressArray[:,0,int(stepsXY/2.)])
+    plt.title('Front spar shear Stress')
+    plt.xlabel('z location (m) -->')
+    plt.ylabel('shear stress (N/m^2) -->')
+    plt.plot(np.multiply(range(len(shearStressArray[:,0,int(stepsXY/2.)])),(l1+l2)/len(shearStressArray[:,0,int(stepsXY/2.)])),-shearStressArray[:,0,int(stepsXY/2.)])
