@@ -16,13 +16,14 @@ from MomentOfInertia import MomentOfInertia
 from NormalStress import NormalStress
 from PlotImportantGraphs import PlotImportantGraphs
 from PlotUnitTests import PlotUnitTests
-from ShearCenter import ShearCenter
+from Shearcentre import Shearcentre
 from ShearStress import ShearStress
 from ShearFlow import ShearFlow
 from ShearForce import ShearForce
 from Torque import Torque
 from XYCoordinates import XYCoordinates
 from FuelWeight import FuelWeight
+from EngineThrust import EngineThrust
 from ValidationData import ValidationData
 from PlotVerificationData import PlotVerificationData
 
@@ -39,7 +40,7 @@ l3 = 9.7 #(m)
 h3 = 2.14 #(m)
 me = 5765 #(kg)
 tFront = 0.005 #(-)
-tRear = 0.003 #(-)5
+tRear = 0.003 #(-)
 tTop = 0.002 #(-)
 tBottom = 0.002 #(-)
 g = 9.81 #(m/s^2)
@@ -50,6 +51,7 @@ fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
 stepsXY = 101
+13
 stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
@@ -83,42 +85,48 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     lift = Lift(z,liftDist,l1,l2,cr,ct,chord,lift,dz)
     liftArray[i] = lift
     
-    #determining engineWeight for shear force
+    #determining engineWeight and thrust for shear force
     engineWeight = EngineWeight(me,g,z,l3)
+    engineThrust = EngineThrust(T,z,l3)    
     
-    #determining engineWeight for shear force
+    #determining fuelWeight for shear force
     fuelWeight = FuelWeight(l1,z,fuelLiters,fuelDensity,g)
     
+    
     #determining shearForce for moment distribution and shearflow, storing in array
-    shearForce = ShearForce(lift, engineWeight, T, l1, l2, l3, z, fuelWeight)
+    shearForce = ShearForce(lift, engineWeight, engineThrust, fuelWeight)
     shearForceArray[i] = shearForce
     
     #determining moment in the wingbox to be able to calculate the normal stresses and storing in array
     moment = Moment(shearForce,moment,dz)
     momentArray[i] = moment
     
+    #determining shear centre
+    ShearCentre = Shearcentre(chord, I, tFront, tRear, tBottom, tTop, stepsXY)
+    
     #deteriming the shearflow and Torque for shear stress calculation
-#    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr,ct)
-#    torqueArray[i] = torque
-#    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep,stepsXY)
+    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr)  
+    torqueArray[i] = torque
+    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom, sweep)
+
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     
     #Calculating output (shearstress and normalstress)
-#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom,chord)
     normalStress = NormalStress(moment,I,chord,coordinates)
 
     #Storing outputs in 3D array
-#    shearStressArray[i,:,:] = shearStress
+    shearStressArray[i,:,:] = shearStress.T
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
     i -= 1
 
 
-PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
-PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
+#PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
+#PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
 ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
 PlotVerificationData(normalStressArray,shearStressArray,stepsXY)
 plt.figure()
