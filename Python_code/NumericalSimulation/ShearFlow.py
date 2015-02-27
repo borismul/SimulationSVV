@@ -117,4 +117,4 @@ tTop = 0.0001
 tBottom = 0.0001
 plot = True
 sweep = 180/m.pi
-print ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep)
+#print ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom,plot, sweep)

@@ -19,13 +19,12 @@ from PlotUnitTests import PlotUnitTests
 from ShearCenter import ShearCenter
 from ShearStress import ShearStress
 from ShearFlow import ShearFlow
-from ShearFlow2 import ShearFlow2
 from ShearForce import ShearForce
 from Torque import Torque
-from Torque2 import Torque2
 from XYCoordinates import XYCoordinates
 from FuelWeight import FuelWeight
 from ValidationData import ValidationData
+from PlotVerificationData import PlotVerificationData
 
 
 plt.close("all")
@@ -50,8 +49,8 @@ fuelLiters = 7500 # (liters)
 fuelDensity = 0.81 # (kg/liter)
 
 #Defining own input variables
-stepsXY = 10
-stepsZ = 10
+stepsXY = 101
+stepsZ = 100
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -99,19 +98,19 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     momentArray[i] = moment
     
     #deteriming the shearflow and Torque for shear stress calculation
-    torque = Torque2(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr,ct)
-    torqueArray[i] = torque
-    shearFlow = ShearFlow2(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep,stepsXY)
+#    torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr,ct)
+#    torqueArray[i] = torque
+#    shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates,tFront,tTop,tRear,tBottom,False,sweep,stepsXY)
     
     #determining coordinate distribution for the four wingbox sides to be able to calculate the shearflows
     coordinates = XYCoordinates(chord,stepsXY,centroid)    
     
     #Calculating output (shearstress and normalstress)
-    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
+#    shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom)
     normalStress = NormalStress(moment,I,chord,coordinates)
 
     #Storing outputs in 3D array
-    shearStressArray[i,:,:] = shearStress
+#    shearStressArray[i,:,:] = shearStress
     normalStressArray[i,:,:] = normalStress
     
     #incrementing i with 1 every loop
@@ -121,3 +120,5 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
 PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
 ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
+PlotVerificationData(normalStressArray,shearStressArray,stepsXY)
+plt.figure()
