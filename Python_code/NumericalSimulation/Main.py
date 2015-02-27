@@ -124,4 +124,3 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 #PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
 ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
 PlotVerificationData(normalStressArray,shearStressArray,stepsXY)
-plt.figure()
