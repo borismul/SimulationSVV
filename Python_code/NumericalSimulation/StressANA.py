@@ -142,28 +142,22 @@ def Normstress(x1,y1):
 
 def vonMisesFront():
     a,b,c,d,e,f,g = shearstress(0.25,0)
-    plt.plot(a,d)
     h,t = Normstress(0.25,0)
-    plt.plot(h,t)
-    plt.show()
+
     mlst = list()
     for i in range(3001): 
         mlst.append((d[i]*d[i]+t[i]*t[i])**(0.5))
-    plt.plot(a,mlst)
-    plt.show()
+
     return h,mlst
 
 def vonMisesTop():
     a,b,c,d,e,f,g = shearstress(0,1/20.)
-    plt.plot(a,c)
     h,t = Normstress(0,0.05)
-    plt.plot(h,t)
-    plt.show()
+
     mlst = list()
     for i in range(3001): 
         mlst.append((c[i]*c[i]+t[i]*t[i])**(0.5))
-    plt.plot(a,mlst)
-    plt.show()
+
     return h,mlst
 
 a,b = vonMisesTop()
