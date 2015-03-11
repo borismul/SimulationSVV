@@ -5,36 +5,36 @@ Input variables: shearforces due to lift, engine weight and fuelweight, total sh
 Output variables: torque
 Output format: float
 '''
-def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chordLength,z,sweep,l1,l2,l3,h3,cr):  
+def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chordLength,z,sweep,l1,l2,l3,h3,cr,ct):  
     sweep = -sweep * m.pi/180
     Mx = moment[0]
     Sx = shearForce[0]
     if (z>l3 and z<l1+l2):
         wl = Mx/lift
-        xl = wl * m.tan(sweep)
-        Torque = lift*(coordinates[0,0]-xl)
-        print 'lift' + str(Torque)
-        print 'arm' + str(coordinates[0,0]-xl)
-        print 'xl' + str(xl)
+        xl = coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - wl * m.tan(sweep)
+        Torque = lift*xl
+#        print 'lift' + str(Torque)
+#        print 'arm' + str(coordinates[0,0]-xl)
+#        print 'xl' + str(xl)
         return Torque
     elif (z >= l1 and z <= l3):
         ww = l3-z
         wl = (Mx+engineWeight*ww)/lift
-        xl =  wl * m.tan(sweep)
-        xw = ww * m.tan(sweep)
-        Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) + Sx*h3
-        print 'lift' + str(lift*(coordinates[0,0]-xl))
-        print 'weight' + str(engineWeight*(coordinates[0,0]-xw))
-        print 'thrust' + str(Sx*h3)
+        xl =  coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - wl * m.tan(sweep)
+        xw = coordinates[0,0] - ww * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - ww * m.tan(sweep)
+        Torque = lift*(xl) - engineWeight*(xw) + Sx*h3
+#        print 'lift' + str(lift*(coordinates[0,0]-xl))
+#        print 'weight' + str(engineWeight*(coordinates[0,0]-xw))
+#        print 'thrust' + str(Sx*h3)
         return Torque
     elif (z >= 0 and z <= l1):
         ww = l3-z
         wf = l1-z
         wl = (Mx+engineWeight*ww+fuelWeight*wf)/lift
-        xl = (wl-wf) * m.tan(sweep)
-        xw = (ww-wf) * m.tan(sweep)
+        xl = coordinates[0,0] - (wl-wf) * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - (wl-wf) * m.tan(sweep)
+        xw = coordinates[0,0] - (ww-wf) * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - (ww-wf) * m.tan(sweep)
         xf = centroid[0]
-        Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*xf + Sx*h3 
+        Torque = lift*(xl) - engineWeight*(xw) - fuelWeight*xf + Sx*h3 
         return Torque
     else:
         return 0.
