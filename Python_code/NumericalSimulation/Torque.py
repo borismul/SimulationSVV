@@ -11,22 +11,28 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
     Sx = shearForce[0]
     if (z>l3 and z<l1+l2):
         wl = Mx/lift
-        xl = wl * m.tan(sweep) + cr*0.25-chordLength*0.25
+        xl = wl * m.tan(sweep)
         Torque = lift*(coordinates[0,0]-xl)
+        print 'lift' + str(Torque)
+        print 'arm' + str(coordinates[0,0]-xl)
+        print 'xl' + str(xl)
         return Torque
     elif (z >= l1 and z <= l3):
         ww = l3-z
         wl = (Mx+engineWeight*ww)/lift
-        xl =  wl * m.tan(sweep) + cr*0.25-chordLength*0.25
-        xw = ww * m.tan(sweep) + cr*0.25-chordLength*0.25
+        xl =  wl * m.tan(sweep)
+        xw = ww * m.tan(sweep)
         Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) + Sx*h3
+        print 'lift' + str(lift*(coordinates[0,0]-xl))
+        print 'weight' + str(engineWeight*(coordinates[0,0]-xw))
+        print 'thrust' + str(Sx*h3)
         return Torque
     elif (z >= 0 and z <= l1):
         ww = l3-z
         wf = l1-z
         wl = (Mx+engineWeight*ww+fuelWeight*wf)/lift
-        xl = (wl-wf) * m.tan(sweep) + cr*0.25-chordLength*0.25
-        xw = (ww-wf) * m.tan(sweep) + cr*0.25-chordLength*0.25
+        xl = (wl-wf) * m.tan(sweep)
+        xw = (ww-wf) * m.tan(sweep)
         xf = centroid[0]
         Torque = lift*(coordinates[0,0]-xl) - engineWeight*(coordinates[0,0]-xw) - fuelWeight*xf + Sx*h3 
         return Torque
