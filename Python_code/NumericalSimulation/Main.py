@@ -122,6 +122,5 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 
 PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
 #PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
-#ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
+ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
 PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2)
->>>>>>> 52d463c0d41f8f202181468e5d1924945aca47b3
