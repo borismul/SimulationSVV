@@ -16,7 +16,7 @@ def shearstress(x,y):
     T_e = 64000
     m_f = 15000*0.81
     g = 9.81
-    la = 8.739*10**3
+    la = -8.739*10**3
     f = 20693
     q01lst = list()
     q12lst = list()
