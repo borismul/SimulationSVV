@@ -146,7 +146,7 @@ def vonMisesFront():
 
     mlst = list()
     for i in range(3001): 
-        mlst.append((d[i]*d[i]+t[i]*t[i])**(0.5))
+        mlst.append((3*d[i]*d[i]+t[i]*t[i])**(0.5))
 
     return h,mlst
 
@@ -156,7 +156,7 @@ def vonMisesTop():
 
     mlst = list()
     for i in range(3001): 
-        mlst.append((c[i]*c[i]+t[i]*t[i])**(0.5))
+        mlst.append((3*c[i]*c[i]+t[i]*t[i])**(0.5))
 
     return h,mlst
 

@@ -25,22 +25,22 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
     #Front
     qbFront = [0]
     for i in range(1,len(coordinates[1,:])):
-        qb += consty * NumInt(coordinates[1,:],tFront*chordLength*coordinates[1,:],coordinates[1,i-1],coordinates[1,i]) + constx * NumInt(coordinates[1,:],tFront*chordLength*coordinates[0,:],coordinates[1,i-1],coordinates[1,i])
+        qb += consty * NumInt(coordinates[1,:],tFront*chordLength*(coordinates[1,:]),coordinates[1,i-1],coordinates[1,i]) + constx * NumInt(coordinates[1,:],tFront*chordLength*(coordinates[0,:]),coordinates[1,i-1],coordinates[1,i])
         qbFront.append(qb)
     #Top
     qbTop = [qbFront[-1]]
     for i in range(1,len(coordinates[4,:])):
-        qb += consty * NumInt(coordinates[4,:],tTop*chordLength*coordinates[5,:],coordinates[4,i-1],coordinates[4,i]) + constx * NumInt(coordinates[4,:],tTop*chordLength*coordinates[4,:],coordinates[4,i-1],coordinates[4,i])
+        qb += consty * NumInt(coordinates[4,:],tTop*chordLength*(coordinates[5,:]),coordinates[4,i-1],coordinates[4,i]) + constx * NumInt(coordinates[4,:],tTop*chordLength*(coordinates[4,:]),coordinates[4,i-1],coordinates[4,i])
         qbTop.append(qb)
     #Rear
     qbRear = [qbTop[-1]]
     for i in range(1,len(coordinates[3,:])):
-        qb += consty * NumInt(coordinates[3,:],tRear*chordLength*coordinates[3,:],coordinates[3,i-1],coordinates[3,i]) + constx * NumInt(coordinates[3,:],tRear*chordLength*coordinates[2,:],coordinates[3,i-1],coordinates[3,i])
+        qb += consty * NumInt(coordinates[3,:],tRear*chordLength*(coordinates[3,:]),coordinates[3,i-1],coordinates[3,i]) + constx * NumInt(coordinates[3,:],tRear*chordLength*(coordinates[2,:]),coordinates[3,i-1],coordinates[3,i])
         qbRear.append(qb)
     #Bottom
     qbBottom = [qbRear[-1]]
     for i in range(1,len(coordinates[6,:])):
-        qb += consty * NumInt(coordinates[6,:],tBottom*chordLength*coordinates[7,:],coordinates[6,i-1],coordinates[6,i]) + constx * NumInt(coordinates[6,:],tBottom*chordLength*coordinates[6,:],coordinates[6,i-1],coordinates[6,i])
+        qb += consty * NumInt(coordinates[6,:],tBottom*chordLength*(coordinates[7,:]),coordinates[6,i-1],coordinates[6,i]) + constx * NumInt(coordinates[6,:],tBottom*chordLength*(coordinates[6,:]),coordinates[6,i-1],coordinates[6,i])
         qbBottom.append(qb)
 
 #Put all the values of qb in an array
@@ -66,8 +66,8 @@ def ShearFlow(chordLength, shearForce, torque, I, coordinates, tFront, tTop, tRe
     qBottom = qbBottom+qs0
     qarray = np.zeros((4,len(qFront)))
     qarray[0,:] = qFront
-    qarray[2,:] = qTop
     qarray[1,:] = qRear
+    qarray[2,:] = qTop
     qarray[3,:] = qBottom
     
     return qarray

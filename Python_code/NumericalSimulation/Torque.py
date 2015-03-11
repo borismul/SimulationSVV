@@ -11,18 +11,20 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
     Sx = shearForce[0]
     if (z>l3 and z<l1+l2):
         wl = Mx/lift
-        xl = coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - wl * m.tan(sweep)
+        xl = coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
         Torque = lift*xl
 #        print 'lift' + str(Torque)
 #        print 'arm' + str(coordinates[0,0]-xl)
 #        print 'xl' + str(xl)
+#        print xl
         return Torque
     elif (z >= l1 and z <= l3):
         ww = l3-z
         wl = (Mx+engineWeight*ww)/lift
-        xl =  coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - wl * m.tan(sweep)
-        xw = coordinates[0,0] - ww * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - ww * m.tan(sweep)
-        Torque = lift*(xl) - engineWeight*(xw) + Sx*h3
+        xl =  coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
+        xw = coordinates[0,0] - ww * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
+        Torque = lift*(xl) - engineWeight*(xw) + Sx*(h3)
+        print xw
 #        print 'lift' + str(lift*(coordinates[0,0]-xl))
 #        print 'weight' + str(engineWeight*(coordinates[0,0]-xw))
 #        print 'thrust' + str(Sx*h3)
@@ -31,10 +33,10 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         ww = l3-z
         wf = l1-z
         wl = (Mx+engineWeight*ww+fuelWeight*wf)/lift
-        xl = coordinates[0,0] - (wl-wf) * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - (wl-wf) * m.tan(sweep)
-        xw = coordinates[0,0] - (ww-wf) * m.tan(sweep+m.atan((cr-ct)/(4*l2))) - (ww-wf) * m.tan(sweep)
+        xl = coordinates[0,0] - (wl-wf) * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
+        xw = coordinates[0,0] - (ww-wf) * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
         xf = centroid[0]
-        Torque = lift*(xl) - engineWeight*(xw) - fuelWeight*xf + Sx*h3 
+        Torque = lift*(xl) - engineWeight*(xw) - fuelWeight*xf + Sx*(h3) 
         return Torque
     else:
         return 0.

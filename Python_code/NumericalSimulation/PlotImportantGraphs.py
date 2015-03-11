@@ -43,13 +43,13 @@ def PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArr
     maxshear = np.amax(shearStressArray, axis = 2)
     minshear = np.amin(shearStressArray, axis = 2)    
         
-    maxShearStressTitles = ['Maximum shear stress in front web','Maximum shear stress in rear web','Maximum shear stress in top web','Maximum shear stress in bottom web']
+    maxShearStressTitles = ['Shear stress in front web','Shear stress in rear web','Shear stress in top web','Shear stress in bottom web']
     plt.figure()
     for i in range(4):
         plt.subplot(221+i)
-        plt.plot(range(stepsZ),maxshear[:,i],"b")
-        plt.plot(range(stepsZ),minshear[:,i],"r")
+        plt.plot(range(stepsZ),maxshear[:,i],"b",label = 'maximum')
+        plt.plot(range(stepsZ),minshear[:,i],"r",label = 'minimum')
         plt.title(maxShearStressTitles[i])
         plt.xlabel('z coordinate (m) -->')
         plt.ylabel('maximum shear stress (N/m^2) -->')
-
+        plt.legend(loc = 2)

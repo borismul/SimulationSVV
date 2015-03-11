@@ -25,7 +25,7 @@ def PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2):
     plt.title('Front spar normal Stress')
     plt.xlabel('z location (m) -->')
     plt.ylabel('normal stress (N/m^2) -->')
-    plt.legend()
+    plt.legend()     
     
     plt.figure()
     plt.subplot(121)

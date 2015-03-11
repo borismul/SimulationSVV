@@ -51,7 +51,7 @@ fuelDensity = 0.81 # (kg/liter)
 #Defining own input variables
 stepsXY = 101
 13
-stepsZ = 100
+stepsZ = 1001
 dz = (l1+l2)/stepsZ
 i = stepsZ - 1
 moment = [0,0]
@@ -105,7 +105,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     torque = Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,chord,z,sweep,l1,l2,l3,h3,cr,ct)  
     torqueArray[i] = torque
     shearFlow = ShearFlow(chord, shearForce, torque, I, coordinates, tFront, tTop, tRear, tBottom) 
-    
+
     #Calculating output (shearstress and normalstress)
     shearStress = ShearStress(shearFlow,tFront,tRear,tTop,tBottom,chord)
     normalStress = NormalStress(moment,I,chord,coordinates)
@@ -119,8 +119,8 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     
 
 #plotting interesting graphs
-
+#plt.plot(range(len(torqueArray)),torqueArray)
 PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
 #PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
-ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
-PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2)
+#ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
+#PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2)

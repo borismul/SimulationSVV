@@ -24,8 +24,8 @@ def ValidationData(normalStress,shearStress,l1,l2,stepsZ,stepsXY):
     plt.plot(valDataFront[:,1],valDataFront[:,4],label = 'Front average')
     plt.plot(valDataTop[:,1],valDataTop[:,4],label = 'Top average')
     
-    plt.plot(anaDataFrontX,anaDataFrontY,label = 'Front analytical calculation')
-    plt.plot(anaDataTopX,anaDataTopY,label = 'Top analytical calculation')
+#    plt.plot(anaDataFrontX,anaDataFrontY,label = 'Front analytical calculation')
+#    plt.plot(anaDataTopX,anaDataTopY,label = 'Top analytical calculation')
 
     plt.title('Von Mises Stress vs z')
     plt.xlabel('z(m) -->')
@@ -36,6 +36,8 @@ def ValidationData(normalStress,shearStress,l1,l2,stepsZ,stepsXY):
     topNormalStress = normalStress[:,2,int(stepsXY/2.)]
     topShearStress = shearStress[:,2,int(stepsXY/2.)]
     
+    print topShearStress[-1]
+    print topNormalStress[-1]
     vonMissesFront = np.sqrt(np.square(frontNormalStress) + 3*np.square(frontShearStress))
     vonMissesTop = np.sqrt(np.square(topNormalStress) + 3*np.square(topShearStress))
     
