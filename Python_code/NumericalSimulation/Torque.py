@@ -13,10 +13,6 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         wl = Mx/lift
         xl = coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
         Torque = lift*xl
-#        print 'lift' + str(Torque)
-#        print 'arm' + str(coordinates[0,0]-xl)
-#        print 'xl' + str(xl)
-#        print xl
         return Torque
     elif (z >= l1 and z <= l3):
         ww = l3-z
@@ -24,10 +20,6 @@ def Torque(lift,engineWeight,fuelWeight,shearForce, moment,coordinates,centroid,
         xl =  coordinates[0,0] - wl * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
         xw = coordinates[0,0] - ww * m.tan(sweep+m.atan((cr-ct)/(4*l2)))
         Torque = lift*(xl) - engineWeight*(xw) + Sx*(h3)
-        print xw
-#        print 'lift' + str(lift*(coordinates[0,0]-xl))
-#        print 'weight' + str(engineWeight*(coordinates[0,0]-xw))
-#        print 'thrust' + str(Sx*h3)
         return Torque
     elif (z >= 0 and z <= l1):
         ww = l3-z

@@ -11,7 +11,7 @@ def PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2):
     ilstFrontNorm, anaFrontNorm = Normstress(0.25,0)
     
     plt.figure()
-    plt.subplot(121)
+    plt.subplot(221)
     plt.title('Top spar normal Stress')
     plt.xlabel('z location (m) -->')
     plt.ylabel('normal stress (N/m^2) -->')
@@ -19,7 +19,7 @@ def PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2):
     plt.plot(ilstTopNorm,anaTopNorm,label = 'Analytical')    
     plt.legend()
     
-    plt.subplot(122)
+    plt.subplot(222)
     plt.plot(np.multiply(range(len(normalStressArray[:,0,int(stepsXY/2.)])),(l1+l2)/len(normalStressArray[:,0,int(stepsXY/2.)])),normalStressArray[:,0,int(stepsXY/2.)],label = 'Numerical')
     plt.plot(ilstFrontNorm,anaFrontNorm,label = 'Analytical')    
     plt.title('Front spar normal Stress')
@@ -27,8 +27,7 @@ def PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2):
     plt.ylabel('normal stress (N/m^2) -->')
     plt.legend()     
     
-    plt.figure()
-    plt.subplot(121)
+    plt.subplot(223)
     plt.title('Top spar shear Stress')
     plt.xlabel('z location (m) -->')
     plt.ylabel('shear stress (N/m^2) -->')
@@ -36,7 +35,7 @@ def PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2):
     plt.plot(ilstTopShear,anaTopShear,label = 'Analytical')    
     plt.legend()
     
-    plt.subplot(122)
+    plt.subplot(224)
     plt.title('Front spar shear Stress')
     plt.xlabel('z location (m) -->')
     plt.ylabel('shear stress (N/m^2) -->')

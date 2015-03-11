@@ -92,7 +92,6 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
     #determining fuelWeight for shear force
     fuelWeight = FuelWeight(l1,z,fuelLiters,fuelDensity,g)
     
-    
     #determining shearForce for moment distribution and shearflow, storing in array
     shearForce = ShearForce(lift, engineWeight, engineThrust, fuelWeight)
     shearForceArray[i] = shearForce
@@ -120,7 +119,7 @@ for z in reversed(np.linspace(0,l1+l2,num = stepsZ, endpoint = True)):
 
 #plotting interesting graphs
 #plt.plot(range(len(torqueArray)),torqueArray)
-PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
+#PlotImportantGraphs(stepsZ,l1,l2,shearForceArray,momentArray,normalStressArray,shearStressArray,plt)
 #PlotUnitTests(stepsZ,l1,l2,IArray,liftArray,coordinates,normalStressArray,shearStressArray,torqueArray,ys,plt)
 #ValidationData(normalStressArray,shearStressArray,l1,l2,stepsZ,stepsXY)
-#PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2)
+PlotVerificationData(normalStressArray,shearStressArray,stepsXY,l1,l2)
